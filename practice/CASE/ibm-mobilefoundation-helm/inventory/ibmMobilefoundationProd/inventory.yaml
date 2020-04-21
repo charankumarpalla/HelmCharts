@@ -1,0 +1,9 @@
+
+# USER ACTION: -- completed
+
+inventory:
+  k8sScope: cluster
+  metadata:
+    displayDescription: "Installs IBM Mobile Foundation"
+    displayName: "IBM Mobile Foundation Installer"
+    name: ibmMobilefoundationProd

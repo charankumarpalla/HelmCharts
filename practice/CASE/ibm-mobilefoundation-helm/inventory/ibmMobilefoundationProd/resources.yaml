@@ -1,0 +1,12 @@
+
+# USER ACTION is Completed
+resources:
+  resourceDefs:
+    cases: []
+    helmCharts:
+    - chart: ibm-mobilefoundation-prod
+      mediaType: application/vnd.case.resource.helm.chart.v1
+      version: 3.0.5
+    files:
+    - mediaType: application/vnd.case.resource.image.manifest.v1
+      ref: manifest.yaml

@@ -1,0 +1,40 @@
+
+# USER ACTION : -- completed
+
+name: ibm-mobilefoundation-helm
+specVersion: 1.0.0
+version: 1.0.0
+appVersion: 3.0.5
+description: "IBM MobileFirst Foundation V8.0. Deploys Server, Push, Analytics and AppCenter."
+displayName: "IBM Mobile Foundation - Cloud Pak for Applications"
+displayDescription: ""
+icons:
+- mediaType: text/plain; charset=utf-8
+  url: https://mobilefirstplatform.ibmcloud.com/assets/foundation.svg
+organization: IBM
+webPage: https://www.ibm.com
+supports:
+  architectures:
+    amd64: {}
+    ppc64le: {}
+    s390x: {}
+  k8sDistros:
+    icp: {}
+  managedPlatforms:
+    ibm: {}
+certifications:
+  ibmccscp: {}
+catalogs:
+  framework: {}
+  integration: {}
+  runtime: {}
+classifications:
+  commercial: {}
+licenses:
+  licenseEn:
+    ref: LICENSE-en
+    mediaType: text/plain; charset=utf-8
+    metadata:
+      displayDescription: ""
+      displayName: LICENSE-en
+      name: licenseEn
