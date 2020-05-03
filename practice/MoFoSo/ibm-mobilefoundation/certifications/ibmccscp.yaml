@@ -1,0 +1,13 @@
+certification:
+  metadata:
+    name: ibmccscp
+    displayName: Certified container software for Cloud Pak
+    description: Certification for ibm-mobilefoundation
+  id: 4a7aca41-51f1-4f7d-8130-dc09186aebb4
+  provider: ibm
+  type: ccscp
+  issueDate: 11/11/2019
+  expirationDate: 11/11/2020
+  terms: >-
+    Valid from date of issue. Security vulnerability management and enhancements
+    are delivered on the latest version of the chart and images
