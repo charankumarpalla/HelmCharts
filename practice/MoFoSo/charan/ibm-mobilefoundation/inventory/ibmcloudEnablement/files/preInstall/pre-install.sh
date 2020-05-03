@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # create CRD
-cat <<EOF | oc apply --namespace ${JOB_NAMESPACE} -f -
+cat <<EOF | kubectl apply --namespace ${JOB_NAMESPACE} -f -
 ---
 apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
@@ -42,7 +42,7 @@ EOF
 echo "------> CRD ran successfully"
 
 # create role
-cat <<EOF | oc apply --namespace ${JOB_NAMESPACE} -f -
+cat <<EOF | apply --namespace ${JOB_NAMESPACE} -f -
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
@@ -144,7 +144,7 @@ EOF
 echo "------> Role ran successfully"
 
 # create role-binding
-cat <<EOF | oc apply --namespace ${JOB_NAMESPACE} -f -
+cat <<EOF | kubectl apply --namespace ${JOB_NAMESPACE} -f -
 ---
 kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
@@ -168,7 +168,7 @@ EOF
 echo "------> role binding ran successfully"
 
 # create ClusterRoleBinding
-cat <<EOF | oc apply --namespace ${JOB_NAMESPACE} -f -
+cat <<EOF | kubectl apply --namespace ${JOB_NAMESPACE} -f -
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
@@ -192,7 +192,7 @@ EOF
 echo "------>ClusterRolebinding ran successfully"
 
 # create SCC
-# cat << EOF | oc apply --namespace ${JOB_NAMESPACE} -f -
+# cat << EOF | kubectl apply --namespace ${JOB_NAMESPACE} -f -
 # ---
 # apiVersion: security.openshift.io/v1
 # kind: SecurityContextConstraints
