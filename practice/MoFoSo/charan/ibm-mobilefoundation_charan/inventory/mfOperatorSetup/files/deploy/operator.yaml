@@ -38,11 +38,9 @@ spec:
       hostNetwork: false
       hostPID: false
       serviceAccountName: mf-operator
-      imagePullSecrets:
-        - name: _IMG_PULLSECRET_
       containers:
         - name: mf-operator
-          image: _IMG_REPO_/mf-operator:1.0.15 # Replace this with the built image name
+          image: cp.icr.io/cp/mf-operator:1.0.15 # Replace this with the built image name
           imagePullPolicy: Always
           env:
             - name: WATCH_NAMESPACE

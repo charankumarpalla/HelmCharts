@@ -1,0 +1,14 @@
+resources:
+  metadata:
+    name: ibmcloudEnablement
+  resourceDefs:
+    files:
+      - ref: preInstall/pre-install.sh
+      - ref: preInstall/README.md
+      - ref: install/install.sh
+      - ref: deploy/crds/charts_v1_mfoperator_cr.yaml
+      - ref: deploy/operator.yaml
+      - ref: deploy/service_account.yaml
+      - ref: install/uninstall.sh
+      - ref: install/README.md
+      - ref: install/values-metadata.yaml

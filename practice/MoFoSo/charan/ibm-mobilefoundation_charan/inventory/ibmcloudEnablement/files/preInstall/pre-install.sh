@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # create CRD
-cat << EOF | oc apply --namespace ${JOB_NAMESPACE} -f -
+cat <<EOF | kubectl apply --namespace ${JOB_NAMESPACE} -f -
 ---
 apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
@@ -39,9 +39,10 @@ spec:
         metadata:
           type: object
 EOF
+echo "------> CRD ran successfully"
 
 # create role
-cat << EOF | oc apply --namespace ${JOB_NAMESPACE} -f -
+cat <<EOF | apply --namespace ${JOB_NAMESPACE} -f -
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
@@ -140,8 +141,10 @@ rules:
   - '*'
 EOF
 
+echo "------> Role ran successfully"
+
 # create role-binding
-cat << EOF | oc apply --namespace ${JOB_NAMESPACE} -f -
+cat <<EOF | kubectl apply --namespace ${JOB_NAMESPACE} -f -
 ---
 kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
@@ -162,11 +165,13 @@ roleRef:
   apiGroup: rbac.authorization.k8s.io
 EOF
 
-# create SCC
-cat << EOF | oc apply --namespace ${JOB_NAMESPACE} -f -
+echo "------> role binding ran successfully"
+
+# create ClusterRoleBinding
+cat <<EOF | kubectl apply --namespace ${JOB_NAMESPACE} -f -
 ---
-apiVersion: security.openshift.io/v1
-kind: SecurityContextConstraints
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
 metadata:
   name: mf-operator
   labels:
@@ -174,45 +179,69 @@ metadata:
     app.kubernetes.io/instance: mf-instance
     app.kubernetes.io/managed-by: helm
     release: mf-operator-1.0.15
-allowHostDirVolumePlugin: false
-allowHostIPC: false
-allowHostNetwork: false
-allowHostPID: false
-allowHostPorts: false
-allowPrivilegedContainer: false
-allowedCapabilities: []
-allowedFlexVolumes: []
-defaultAddCapabilities: []
-fsGroup:
-  type: MustRunAs
-  ranges:
-  - max: 65535
-    min: 1
-readOnlyRootFilesystem: false
-requiredDropCapabilities:
-- ALL
-runAsUser:
-  type: MustRunAsNonRoot
-seccompProfiles:
-- docker/default
-seLinuxContext:
-  type: RunAsAny
-supplementalGroups:
-  type: MustRunAs
-  ranges:
-  - max: 65535
-    min: 1
-volumes:
-- configMap
-- downwardAPI
-- emptyDir
-- persistentVolumeClaim
-- projected
-- secret
-priority: 0
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+  - kind: ServiceAccount
+    name: mf-operator
+    namespace: default
 EOF
 
-oc adm policy add-scc-to-group mf-operator system:serviceaccounts:${JOB_NAMESPACE}
-oc adm policy add-cluster-role-to-user cluster-admin system:serviceaccount:${JOB_NAMESPACE}:mf-operator
+echo "------>ClusterRolebinding ran successfully"
+
+# create SCC
+# cat << EOF | kubectl apply --namespace ${JOB_NAMESPACE} -f -
+# ---
+# apiVersion: security.openshift.io/v1
+# kind: SecurityContextConstraints
+# metadata:
+#   name: mf-operator
+#   labels:
+#     app.kubernetes.io/name: mf-operator
+#     app.kubernetes.io/instance: mf-instance
+#     app.kubernetes.io/managed-by: helm
+#     release: mf-operator-1.0.15
+# allowHostDirVolumePlugin: false
+# allowHostIPC: false
+# allowHostNetwork: false
+# allowHostPID: false
+# allowHostPorts: false
+# allowPrivilegedContainer: false
+# allowedCapabilities: []
+# allowedFlexVolumes: []
+# defaultAddCapabilities: []
+# fsGroup:
+#   type: MustRunAs
+#   ranges:
+#   - max: 65535
+#     min: 1
+# readOnlyRootFilesystem: false
+# requiredDropCapabilities:
+# - ALL
+# runAsUser:
+#   type: MustRunAsNonRoot
+# seccompProfiles:
+# - docker/default
+# seLinuxContext:
+#   type: RunAsAny
+# supplementalGroups:
+#   type: MustRunAs
+#   ranges:
+#   - max: 65535
+#     min: 1
+# volumes:
+# - configMap
+# - downwardAPI
+# - emptyDir
+# - persistentVolumeClaim
+# - projected
+# - secret
+# priority: 0
+# EOF
+
+# oc adm policy add-scc-to-group mf-operator system:serviceaccounts:${JOB_NAMESPACE}
+# oc adm policy add-cluster-role-to-user cluster-admin system:serviceaccount:${JOB_NAMESPACE}:mf-operator
 
 echo "Script ran successfully"

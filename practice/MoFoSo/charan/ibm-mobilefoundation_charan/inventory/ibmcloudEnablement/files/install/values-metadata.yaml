@@ -17,7 +17,7 @@
 mf_console_route_prefix:
   __metadata:
     label: "Console route prefix"
-    description: "Specifies the prefix to be added to the ingress subdomain to access the deployed service (e.g. mobilefoundation)"
+    description: "Specifies the prefix for the ingress subdomain/routes to access the deployed service (e.g. mobilefoundation)"
     type: "string"
     default: "mobilefoundation"
     required: true
@@ -116,6 +116,7 @@ db_schema:
     label: "MF Database Schema"
     description: "Mobile Foundation Database schema name to be created when the Mobile Foundation is deployed. If the schema already exists, it will be reused."
     type: "string"
+    default: "MFPDATA"
     required: true
 db_ssl:
   __metadata:

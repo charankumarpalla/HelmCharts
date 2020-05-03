@@ -1,0 +1,270 @@
+charts:
+  - archive: file:ibm-mobilefoundation-prod-3.1.0.tgz
+    repository-keys:
+      - global.dbinit.repository
+      - mfpserver.repository
+      - mfppush.repository
+      - mfpanalytics.repository
+      - mfpappcenter.repository
+
+images:
+  - image: mfpf-server:2.1.9
+    references:
+      - repository: mfpf-server:2.1.9-amd64
+        pull-repository: cp.icr.io/cp/mfpf-server:2.1.9-amd64
+        pull-authorization:
+          username:
+            env: ARTIFACTORY_USERNAME
+          password:
+            env: ARTIFACTORY_PASSWORD
+        platform:
+          os: linux
+          architecture: amd64
+      - repository: mfpf-server:2.1.9-ppc64le
+        pull-repository: cp.icr.io/cp/mfpf-server:2.1.9-ppc64le
+        pull-authorization:
+          username:
+            env: ARTIFACTORY_USERNAME
+          password:
+            env: ARTIFACTORY_PASSWORD
+        platform:
+          os: linux
+          architecture: ppc64le
+      - repository: mfpf-server:2.1.9-s390x
+        pull-repository: cp.icr.io/cp/mfpf-server:2.1.9-s390x
+        pull-authorization:
+          username:
+            env: ARTIFACTORY_USERNAME
+          password:
+            env: ARTIFACTORY_PASSWORD
+        platform:
+          os: linux
+          architecture: s390x
+  - image: mfpf-analytics:2.1.9
+    references:
+      - repository: mfpf-analytics:2.1.9-amd64
+        pull-repository: cp.icr.io/cp/mfpf-analytics:2.1.9-amd64
+        pull-authorization:
+          username:
+            env: ARTIFACTORY_USERNAME
+          password:
+            env: ARTIFACTORY_PASSWORD
+        platform:
+          os: linux
+          architecture: amd64
+      - repository: mfpf-analytics:2.1.9-ppc64le
+        pull-repository: cp.icr.io/cp/mfpf-analytics:2.1.9-ppc64le
+        pull-authorization:
+          username:
+            env: ARTIFACTORY_USERNAME
+          password:
+            env: ARTIFACTORY_PASSWORD
+        platform:
+          os: linux
+          architecture: ppc64le
+      - repository: mfpf-analytics:2.1.9-s390x
+        pull-repository: cp.icr.io/cp/mfpf-analytics:2.1.9-s390x
+        pull-authorization:
+          username:
+            env: ARTIFACTORY_USERNAME
+          password:
+            env: ARTIFACTORY_PASSWORD
+        platform:
+          os: linux
+          architecture: s390x
+  - image: mfpf-appcenter:2.1.9
+    references:
+      - repository: mfpf-appcenter:2.1.9-amd64
+        pull-repository: cp.icr.io/cp/mfpf-appcenter:2.1.9-amd64
+        pull-authorization:
+          username:
+            env: ARTIFACTORY_USERNAME
+          password:
+            env: ARTIFACTORY_PASSWORD
+        platform:
+          os: linux
+          architecture: amd64
+      - repository: mfpf-appcenter:2.1.9-ppc64le
+        pull-repository: cp.icr.io/cp/mfpf-appcenter:2.1.9-ppc64le
+        pull-authorization:
+          username:
+            env: ARTIFACTORY_USERNAME
+          password:
+            env: ARTIFACTORY_PASSWORD
+        platform:
+          os: linux
+          architecture: ppc64le
+      - repository: mfpf-appcenter:2.1.9-s390x
+        pull-repository: cp.icr.io/cp/mfpf-appcenter:2.1.9-s390x
+        pull-authorization:
+          username:
+            env: ARTIFACTORY_USERNAME
+          password:
+            env: ARTIFACTORY_PASSWORD
+        platform:
+          os: linux
+          architecture: s390x
+  - image: mfpf-push:2.1.9
+    references:
+      - repository: mfpf-push:2.1.9-amd64
+        pull-repository: cp.icr.io/cp/mfpf-push:2.1.9-amd64
+        pull-authorization:
+          username:
+            env: ARTIFACTORY_USERNAME
+          password:
+            env: ARTIFACTORY_PASSWORD
+        platform:
+          os: linux
+          architecture: amd64
+      - repository: mfpf-push:2.1.9-ppc64le
+        pull-repository: cp.icr.io/cp/mfpf-push:2.1.9-ppc64le
+        pull-authorization:
+          username:
+            env: ARTIFACTORY_USERNAME
+          password:
+            env: ARTIFACTORY_PASSWORD
+        platform:
+          os: linux
+          architecture: ppc64le
+      - repository: mfpf-push:2.1.9-s390x
+        pull-repository: cp.icr.io/cp/mfpf-push:2.1.9-s390x
+        pull-authorization:
+          username:
+            env: ARTIFACTORY_USERNAME
+          password:
+            env: ARTIFACTORY_PASSWORD
+        platform:
+          os: linux
+          architecture: s390x
+  - image: mfpf-liveupdate:2.1.9
+    references:
+      - repository: mfpf-liveupdate:2.1.9-amd64
+        pull-repository: cp.icr.io/cp/mfpf-liveupdate:2.1.9-amd64
+        pull-authorization:
+          username:
+            env: ARTIFACTORY_USERNAME
+          password:
+            env: ARTIFACTORY_PASSWORD
+        platform:
+          os: linux
+          architecture: amd64
+      - repository: mfpf-liveupdate:2.1.9-ppc64le
+        pull-repository: cp.icr.io/cp/mfpf-liveupdate:2.1.9-ppc64le
+        pull-authorization:
+          username:
+            env: ARTIFACTORY_USERNAME
+          password:
+            env: ARTIFACTORY_PASSWORD
+        platform:
+          os: linux
+          architecture: ppc64le
+      - repository: mfpf-liveupdate:2.1.9-s390x
+        pull-repository: cp.icr.io/cp/mfpf-liveupdate:2.1.9-s390x
+        pull-authorization:
+          username:
+            env: ARTIFACTORY_USERNAME
+          password:
+            env: ARTIFACTORY_PASSWORD
+        platform:
+          os: linux
+          architecture: s390x
+  - image: mfpf-dbinit:2.1.9
+    references:
+      - repository: mfpf-dbinit:2.1.9-amd64
+        pull-repository: cp.icr.io/cp/mfpf-dbinit:2.1.9-amd64
+        pull-authorization:
+          username:
+            env: ARTIFACTORY_USERNAME
+          password:
+            env: ARTIFACTORY_PASSWORD
+        platform:
+          os: linux
+          architecture: amd64
+      - repository: mfpf-dbinit:2.1.9-ppc64le
+        pull-repository: cp.icr.io/cp/mfpf-dbinit:2.1.9-ppc64le
+        pull-authorization:
+          username:
+            env: ARTIFACTORY_USERNAME
+          password:
+            env: ARTIFACTORY_PASSWORD
+        platform:
+          os: linux
+          architecture: ppc64le
+      - repository: mfpf-dbinit:2.1.9-s390x
+        pull-repository: cp.icr.io/cp/mfpf-dbinit:2.1.9-s390x
+        pull-authorization:
+          username:
+            env: ARTIFACTORY_USERNAME
+          password:
+            env: ARTIFACTORY_PASSWORD
+        platform:
+          os: linux
+          architecture: s390x
+  - image: mf-operator:1.0.15
+    references:
+      - repository: mf-operator:1.0.15
+        pull-repository: cp.icr.io/cp/mf-operator:1.0.15
+        pull-authorization:
+          username:
+            env: ARTIFACTORY_USERNAME
+          password:
+            env: ARTIFACTORY_PASSWORD
+        platform:
+          os: linux
+          architecture: amd64
+  - image: mfpf-analytics-recvr:2.1.9
+    references:
+      - repository: mfpf-analytics-recvr:2.1.9-amd64
+        pull-repository: cp.icr.io/cp/mfpf-analytics-recvr:2.1.9-amd64
+        pull-authorization:
+          username:
+            env: ARTIFACTORY_USERNAME
+          password:
+            env: ARTIFACTORY_PASSWORD
+        platform:
+          os: linux
+          architecture: amd64
+      - repository: mfpf-analytics-recvr:2.1.9-ppc64le
+        pull-repository: cp.icr.io/cp/mfpf-analytics-recvr:2.1.9-ppc64le
+        pull-authorization:
+          username:
+            env: ARTIFACTORY_USERNAME
+          password:
+            env: ARTIFACTORY_PASSWORD
+        platform:
+          os: linux
+          architecture: ppc64le
+      - repository: mfpf-analytics-recvr:2.1.9-s390x
+        pull-repository: cp.icr.io/cp/mfpf-analytics-recvr:2.1.9-s390x
+        pull-authorization:
+          username:
+            env: ARTIFACTORY_USERNAME
+          password:
+            env: ARTIFACTORY_PASSWORD
+        platform:
+          os: linux
+          architecture: s390x
+  - image: busybox:1.30.1
+    references:
+      - repository: busybox:1.30.1
+        pull-repository: ibmcom/busybox:1.30.1
+        pull-authorization:
+          username:
+            env: ARTIFACTORY_USERNAME
+          password:
+            env: ARTIFACTORY_PASSWORD
+        platform:
+          os: linux
+          architecture: amd64
+  - image: opencontent-common-utils:1.1.2
+    references:
+      - repository: opencontent-common-utils:1.1.2
+        pull-repository: ibmcom/opencontent-common-utils:1.1.2
+        pull-authorization:
+          username:
+            env: ARTIFACTORY_USERNAME
+          password:
+            env: ARTIFACTORY_PASSWORD
+        platform:
+          os: linux
+          architecture: amd64
