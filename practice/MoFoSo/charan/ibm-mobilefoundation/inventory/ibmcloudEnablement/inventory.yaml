@@ -1,0 +1,26 @@
+inventory:
+  metadata:
+    name: ibmcloudEnablement
+    description: IBM Cloud Enablement data including deployment information.
+    com_ibm_deployment:
+      target: ibmcloud
+      description: Installation for IBM Cloud
+      type: roks
+      version: 4.1.0
+      install_kind: bash
+      pre_install_scope: namespace
+      min_configuration:
+        mem: 16
+        disk: 20
+        cores: 8
+        nodes: 1
+      single_instance: true
+      launch_url_schema: https://${mf_console_route_prefix}.${INGRESS_HOSTNAME}
+      docs_url: https://cloud.ibm.com/docs/mfp
+      source_url: https://will.bereplaced.tgz
+      iam_roles:
+        install:
+        - Writer
+        pre_install:
+        - Manager
+  k8sScope: cluster
