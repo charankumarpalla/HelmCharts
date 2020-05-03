@@ -30,8 +30,8 @@ export _SYSGEN_DOCKER_REGISTRY_PASSWORD="lmTwt2gWsxJk25XAFATqGqkdWxWWOdsSfJhYL7G
 
 _GEN_IMG_PULLSECRET=mf-image-docker-pull
 # create pull secret
-oc create secret docker-registry ${_GEN_IMG_PULLSECRET} -n ${_SYSGEN_MF_NAMESPACE} --docker-server=${_SYSGEN_DOCKER_REGISTRY} --docker-username=${_SYSGEN_DOCKER_REGISTRY_USER} --docker-password=${_SYSGEN_DOCKER_REGISTRY_PASSWORD}
-oc secrets -n ${_SYSGEN_MF_NAMESPACE} link default ${_GEN_IMG_PULLSECRET} --for=pull
+kubectl create secret docker-registry ${_GEN_IMG_PULLSECRET} -n ${_SYSGEN_MF_NAMESPACE} --docker-server=${_SYSGEN_DOCKER_REGISTRY} --docker-username=${_SYSGEN_DOCKER_REGISTRY_USER} --docker-password=${_SYSGEN_DOCKER_REGISTRY_PASSWORD}
+kubectl secrets -n ${_SYSGEN_MF_NAMESPACE} link default ${_GEN_IMG_PULLSECRET} --for=pull
 
 # Create service account
 sed -i "s|_IMG_REPO_|${_SYSGEN_DOCKER_REGISTRY}/cp|g" ${OPERATOR_YAML}
@@ -39,8 +39,8 @@ sed -i "s|_IMG_PULLSECRET_|${_GEN_IMG_PULLSECRET}|g" ${OPERATOR_YAML}
 sed -i "s|_IMG_PULLSECRET_|${_GEN_IMG_PULLSECRET}|g" ${SA_YAML}
 
 # Create Operator & service account
-oc create -f ${OPERATOR_YAML}
-oc create -f ${SA_YAML}
+kubectl create -f ${OPERATOR_YAML}
+kubectl create -f ${SA_YAML}
 
 ############################
 # setting image names
@@ -102,7 +102,7 @@ if [ "${mfpserver_enabled}" == "true" ] || [ "${mfppush_enabled}" == "true" ] ||
 
 	echo -e "${DB_SECRET_STRING}" >${_GEN_DB_SECRET_NAME}.yaml
 
-	(exec oc apply -f ${_GEN_DB_SECRET_NAME}.yaml)
+	(exec kubectl apply -f ${_GEN_DB_SECRET_NAME}.yaml)
 
 	RC=$?
 
@@ -358,4 +358,4 @@ sed -i "s|_AC_RL_CPU_|${mfpappcenter_resources_limits_cpu}|g" ${CR_YAML}
 sed -i "s|_AC_RL_MEM_|${mfpappcenter_resources_limits_memory}|g" ${CR_YAML}
 
 # Create the CR (deploy MF)
-oc apply -f ${CR_YAML}
+kubectl apply -f ${CR_YAML}

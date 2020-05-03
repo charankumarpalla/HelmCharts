@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # create CRD
-cat << EOF | oc apply --namespace ${JOB_NAMESPACE} -f -
+cat <<EOF | kubectl apply --namespace ${JOB_NAMESPACE} -f -
 ---
 apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
@@ -41,7 +41,7 @@ spec:
 EOF
 
 # create role
-cat << EOF | oc apply --namespace ${JOB_NAMESPACE} -f -
+cat <<EOF | kubectl apply --namespace ${JOB_NAMESPACE} -f -
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
@@ -141,7 +141,7 @@ rules:
 EOF
 
 # create role-binding
-cat << EOF | oc apply --namespace ${JOB_NAMESPACE} -f -
+cat <<EOF | kubectl apply --namespace ${JOB_NAMESPACE} -f -
 ---
 kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
@@ -162,8 +162,32 @@ roleRef:
   apiGroup: rbac.authorization.k8s.io
 EOF
 
+# create ClusterRoleBinding
+cat <<EOF | kubectl apply --namespace ${JOB_NAMESPACE} -f -
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: mf-operator
+  labels:
+    app.kubernetes.io/name: mf-operator
+    app.kubernetes.io/instance: mf-instance
+    app.kubernetes.io/managed-by: helm
+    release: mf-operator-1.0.15
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+  - kind: ServiceAccount
+    name: mf-operator
+    namespace: default
+EOF
+
+echo "------>ClusterRolebinding ran successfully"
+
 # create SCC
-cat << EOF | oc apply --namespace ${JOB_NAMESPACE} -f -
+cat <<EOF | kubectl apply --namespace ${JOB_NAMESPACE} -f -
 ---
 apiVersion: security.openshift.io/v1
 kind: SecurityContextConstraints
