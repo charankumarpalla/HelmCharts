@@ -236,7 +236,7 @@ volumes:
 priority: 0
 EOF
 
-oc adm policy add-scc-to-group mf-operator system:serviceaccounts:${JOB_NAMESPACE}
-oc adm policy add-cluster-role-to-user cluster-admin system:serviceaccount:${JOB_NAMESPACE}:mf-operator
+# oc adm policy add-scc-to-group mf-operator system:serviceaccounts:${JOB_NAMESPACE}
+# oc adm policy add-cluster-role-to-user cluster-admin system:serviceaccount:${JOB_NAMESPACE}:mf-operator
 
 echo "Script ran successfully"
