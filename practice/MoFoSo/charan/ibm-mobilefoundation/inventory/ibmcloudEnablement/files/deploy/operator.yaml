@@ -39,11 +39,10 @@ spec:
       hostPID: false
       serviceAccountName: mf-operator
       imagePullSecrets:
-        # - name: _IMG_PULLSECRET_
-        - name: charanpullkrishnasecret
+        - name: _IMG_PULLSECRET_
       containers:
         - name: mf-operator
-          image: us.icr.io/mfaas/mf-operator:1.0.15 # Replace this with the built image name
+          image: _IMG_REPO_/mf-operator:1.0.15 # Replace this with the built image name
           imagePullPolicy: Always
           env:
             - name: WATCH_NAMESPACE
@@ -64,40 +63,40 @@ spec:
             runAsUser: 1001
             capabilities:
               drop:
-                - ALL
+              - ALL
           resources:
             requests:
               cpu: 400m
-              memory: 500Mi
+              memory: 500Mi 
             limits:
               cpu: 750m
               memory: 600Mi
           livenessProbe:
             exec:
               command:
-                - cd
-                - .
+              - cd 
+              - .
           readinessProbe:
             exec:
               command:
-                - cd
-                - .
+              - cd
+              - .
             initialDelaySeconds: 5
             periodSeconds: 5
       affinity:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
-              - matchExpressions:
-                  - key: beta.kubernetes.io/arch
-                    operator: In
-                    values:
-                      - amd64
+            - matchExpressions:
+              - key: beta.kubernetes.io/arch
+                operator: In
+                values:
+                - amd64
           preferredDuringSchedulingIgnoredDuringExecution:
-            - weight: 3
-              preference:
-                matchExpressions:
-                  - key: beta.kubernetes.io/arch
-                    operator: In
-                    values:
-                      - amd64
+          - weight: 3
+            preference:
+              matchExpressions:
+              - key: beta.kubernetes.io/arch
+                operator: In
+                values:
+                - amd64

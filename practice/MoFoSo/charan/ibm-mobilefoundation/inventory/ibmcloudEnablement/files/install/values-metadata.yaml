@@ -392,7 +392,7 @@ mfppush_tag:
     description: "A tag is a label applied to a image in a repository. Tags are how various images in a repository are distinguished from each other."
     type: "string"
     required: true
-    default: "2.1.9"       
+    default: "2.1.9"
 mfppush_replicas:
   __metadata:
     label: "Replica Count"

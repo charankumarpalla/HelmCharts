@@ -6,6 +6,9 @@ resources:
       - ref: preInstall/pre-install.sh
       - ref: preInstall/README.md
       - ref: install/install.sh
+      - ref: install/analytics_vol_perms.sh
+      - ref: install/check_for_mf_database.sh
+      - ref: install/check_pods_ready.sh
       - ref: deploy/crds/charts_v1_mfoperator_cr.yaml
       - ref: deploy/operator.yaml
       - ref: deploy/service_account.yaml
