@@ -17,13 +17,13 @@ spec:
   # Contributors:
   # IBM Corporation - initial API and implementation
   ###############################################################################
-
+  
   ###############################################################################
   # Default values for MFOperator
   # This is a YAML-formatted file.
   # Declare variables to be passed into your templates.
   ###############################################################################
-
+  
   ###############################################################################
   # Specify architecture (amd64, ppc64le, s390x) and weight to be  used for scheduling as follows :
   #   0 - Do not use
@@ -32,7 +32,7 @@ spec:
   #   3 - Most preferred
   # Note: IBM Mobile Foundation Package for Openshift currently supports only amd64 architecture.
   ###############################################################################
-
+  
   ###############################################################################
   ## Global configuration
   ###############################################################################
@@ -43,7 +43,7 @@ spec:
       s390x: "0 - Do not use"
     image:
       pullPolicy: _IMG_PULLPOLICY_
-      pullSecret: charanpullkrishnasecret
+      pullSecret: _IMG_PULLSECRET_
     ingress:
       hostname: "_INGRESS_HOSTNAME_"
       secret: "_INGRESS_SECRET_"
@@ -199,9 +199,9 @@ spec:
       limits:
         cpu: _ANALYTICS_RL_CPU_
         memory: _ANALYTICS_RL_MEM_
-  ###############################################################################
+ ###############################################################################
   ## MFP Analytics Receiver configuration
-  ###############################################################################
+ ###############################################################################
   mfpanalytics_recvr:
     enabled: _RECVR_ENABLE_
     repository: _RECVR_IMG_REPO_

@@ -34,8 +34,8 @@ export _SYSGEN_DOCKER_REGISTRY_PASSWORD="lmTwt2gWsxJk25XAFATqGqkdWxWWOdsSfJhYL7G
 
 _GEN_IMG_PULLSECRET=mf-image-docker-pull
 # create pull secret
-oc create secret docker-registry ${_GEN_IMG_PULLSECRET} -n ${_SYSGEN_MF_NAMESPACE} --docker-server=${_SYSGEN_DOCKER_REGISTRY} --docker-username=${_SYSGEN_DOCKER_REGISTRY_USER} --docker-password=${_SYSGEN_DOCKER_REGISTRY_PASSWORD}
-oc secrets -n ${_SYSGEN_MF_NAMESPACE} link default ${_GEN_IMG_PULLSECRET} --for=pull
+kubectl create secret docker-registry ${_GEN_IMG_PULLSECRET} -n ${_SYSGEN_MF_NAMESPACE} --docker-server=${_SYSGEN_DOCKER_REGISTRY} --docker-username=${_SYSGEN_DOCKER_REGISTRY_USER} --docker-password=${_SYSGEN_DOCKER_REGISTRY_PASSWORD}
+kubectl secrets -n ${_SYSGEN_MF_NAMESPACE} link default ${_GEN_IMG_PULLSECRET} --for=pull
 
 # Create service account
 sed -i "s|_IMG_REPO_|${_SYSGEN_DOCKER_REGISTRY}/cp|g" ${OPERATOR_YAML}
@@ -49,8 +49,8 @@ cat ${SA_YAML}
 echo ""
 
 # Create Operator & service account
-oc apply --namespace ${JOB_NAMESPACE} -f ${OPERATOR_YAML}
-oc apply --namespace ${JOB_NAMESPACE} -f ${SA_YAML}
+kubectl apply --namespace ${JOB_NAMESPACE} -f ${OPERATOR_YAML}
+kubectl apply --namespace ${JOB_NAMESPACE} -f ${SA_YAML}
 
 #
 # Check Pod status
@@ -206,7 +206,7 @@ fi
 
 sed -i "s|_IMG_PULLPOLICY_|${image_pullPolicy}|g" ${CR_YAML}
 sed -i "s|_IMG_PULLSECRET_|${_GEN_IMG_PULLSECRET}|g" ${CR_YAML}
-sed -i "s|_INGRESS_HOSTNAME_|${INGRESS_HOSTNAME}|g" ${CR_YAML}
+sed -i "s|_INGRESS_HOSTNAME_|${mf_console_route_prefix}.${INGRESS_HOSTNAME}|g" ${CR_YAML}
 sed -i "s|_INGRESS_SECRET_|${ingress_secret}|g" ${CR_YAML}
 sed -i "s|_SSL_PASSTHROUGH_|${ingress_sslPassThrough}|g" ${CR_YAML}
 sed -i "s|_ENABLE_HTTPS_|${ingress_https}|g" ${CR_YAML}

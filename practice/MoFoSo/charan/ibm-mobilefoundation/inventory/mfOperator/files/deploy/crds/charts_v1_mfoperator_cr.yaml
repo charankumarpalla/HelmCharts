@@ -17,13 +17,13 @@ spec:
   # Contributors:
   # IBM Corporation - initial API and implementation
   ###############################################################################
-
+  
   ###############################################################################
   # Default values for MFOperator
   # This is a YAML-formatted file.
   # Declare variables to be passed into your templates.
   ###############################################################################
-
+  
   ###############################################################################
   # Specify architecture (amd64, ppc64le, s390x) and weight to be  used for scheduling as follows :
   #   0 - Do not use
@@ -32,7 +32,7 @@ spec:
   #   3 - Most preferred
   # Note: IBM Mobile Foundation Package for Openshift currently supports only amd64 architecture.
   ###############################################################################
-
+  
   ###############################################################################
   ## Global configuration
   ###############################################################################
@@ -43,7 +43,7 @@ spec:
       s390x: "0 - Do not use"
     image:
       pullPolicy: IfNotPresent
-      pullSecret: charanpullkrishnasecret
+      pullSecret:
     ingress:
       hostname: ""
       secret: ""
@@ -51,7 +51,7 @@ spec:
     https: false
     dbinit:
       enabled: true
-      repository: us.icr.io/mfaas/mfpf-dbinit
+      repository: cp.icr.io/cp/mfpf-dbinit
       tag: 2.1.9
       resources:
         requests:
@@ -65,7 +65,7 @@ spec:
   ###############################################################################
   mfpserver:
     enabled: true
-    repository: us.icr.io/mfaas/mfpf-server
+    repository: cp.icr.io/cp/mfpf-server
     tag: 2.1.9
     consoleSecret: ""
     db:
@@ -109,7 +109,7 @@ spec:
   ###############################################################################
   mfppush:
     enabled: true
-    repository: us.icr.io/mfaas/mfpf-push
+    repository: cp.icr.io/cp/mfpf-push
     tag: 2.1.9
     replicas: 3
     autoscaling:
@@ -134,7 +134,7 @@ spec:
   ###############################################################################
   mfpliveupdate:
     enabled: false
-    repository: us.icr.io/mfaas/mfpf-liveupdate
+    repository: cp.icr.io/cp/mfpf-liveupdate
     tag: 2.1.9
     db:
       type: "DB_TYPE"
@@ -145,7 +145,7 @@ spec:
       schema: "MFPF_LIVEUPDATE_DB_SCHEMA"
       ssl: false
       driverPvc: ""
-      adminCredentialsSecret: ""
+      adminCredentialsSecret: "" 
     replicas: 2
     autoscaling:
       enabled: false
@@ -169,7 +169,7 @@ spec:
   ###############################################################################
   mfpanalytics:
     enabled: false
-    repository: us.icr.io/mfaas/mfpf-analytics
+    repository: cp.icr.io/cp/mfpf-analytics
     tag: 2.1.9
     consoleSecret: ""
     replicas: 2
@@ -199,12 +199,12 @@ spec:
       limits:
         cpu: 1000m
         memory: 2048Mi
-  ###############################################################################
+ ###############################################################################
   ## MFP Analytics Receiver configuration
-  ###############################################################################
+ ###############################################################################
   mfpanalytics_recvr:
     enabled: false
-    repository: us.icr.io/mfaas/mfpf-analytics-recvr
+    repository: cp.icr.io/cp/mfpf-analytics-recvr
     tag: 2.1.9
     replicas: 1
     autoscaling:
@@ -230,7 +230,7 @@ spec:
   ###############################################################################
   mfpappcenter:
     enabled: false
-    repository: us.icr.io/mfaas//mfpf-appcenter
+    repository: cp.icr.io/cp/mfpf-appcenter
     tag: 2.1.9
     consoleSecret: ""
     db:

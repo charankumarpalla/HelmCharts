@@ -142,24 +142,24 @@ EOF
 
 # create ClusterRoleBinding
 cat <<EOF | kubectl apply --namespace ${JOB_NAMESPACE} -f -
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
-metadata:
-  name: mf-operator
-  labels:
-    app.kubernetes.io/name: mf-operator
-    app.kubernetes.io/instance: mf-instance
-    app.kubernetes.io/managed-by: helm
-    release: mf-operator-1.0.15
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: cluster-admin
-subjects:
-  - kind: ServiceAccount
-    name: mf-operator
-    namespace: default
+---	
+apiVersion: rbac.authorization.k8s.io/v1	
+kind: ClusterRoleBinding	
+metadata:	
+  name: mf-operator	
+  labels:	
+    app.kubernetes.io/name: mf-operator	
+    app.kubernetes.io/instance: mf-instance	
+    app.kubernetes.io/managed-by: helm	
+    release: mf-operator-1.0.15	
+roleRef:	
+  apiGroup: rbac.authorization.k8s.io	
+  kind: ClusterRole	
+  name: cluster-admin	
+subjects:	
+  - kind: ServiceAccount	
+    name: mf-operator	
+    namespace: default	
 EOF
 
 echo "------>ClusterRolebinding ran successfully"
