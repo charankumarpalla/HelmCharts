@@ -45,8 +45,8 @@ spec:
       pullPolicy: _IMG_PULLPOLICY_
       pullSecret: _IMG_PULLSECRET_
     ingress:
-      hostname: _INGRESS_HOSTNAME_
-      secret: _INGRESS_SECRET_
+      hostname: "_INGRESS_HOSTNAME_"
+      secret: "_INGRESS_SECRET_"
       sslPassThrough: _SSL_PASSTHROUGH_
     https: _ENABLE_HTTPS_
     dbinit:
@@ -179,7 +179,7 @@ spec:
       max: _ANALYTICS_AUTOSCALING_MAX_
       targetcpu: _ANALYTICS_AUTOSCALING_TARGET_CPU_
     shards: "_ANALYTICS_SHARDS_"
-    replicasPerShard: "_ANALYTICS_REPLICAS_PER_SHARD_"
+    replicasPerShard: "_ANALYTICS_RPLICAS_PER_SHARD_"
     persistence:
       enabled: _ANALYTICS_PERSISTENCE_ENABLE_
       useDynamicProvisioning: _ANALYTICS_PERSISTENCE_DYNAPROV_ENABLE_
@@ -204,7 +204,7 @@ spec:
  ###############################################################################
   mfpanalytics_recvr:
     enabled: _RECVR_ENABLE_
-    repository: _RECVR_IMG_REPO
+    repository: _RECVR_IMG_REPO_
     tag: _RECVR_IMG_TAG_
     replicas: _RECVR_REPLICAS_
     autoscaling:
@@ -230,7 +230,7 @@ spec:
   ###############################################################################
   mfpappcenter:
     enabled: _AC_ENABLE_
-    repository: _AC_IMG_REPO
+    repository: _AC_IMG_REPO_
     tag: _AC_IMG_TAG_
     consoleSecret: "_AC_CONSOLE_SECRET_"
     db:

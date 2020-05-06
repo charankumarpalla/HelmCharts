@@ -24,6 +24,10 @@ _SYSGEN_MF_NAMESPACE=${JOB_NAMESPACE}
 #export _SYSGEN_DOCKER_REGISTRY_USER=${DOCKER_REGISTRY_USER}
 #export _SYSGEN_DOCKER_REGISTRY_PASS=${DOCKER_REGISTRY_PASS}
 
+echo *******************************
+echo JOB_NAMESPACE=${JOB_NAMESPACE}
+echo *******************************
+
 export _SYSGEN_DOCKER_REGISTRY="cp.stg.icr.io"
 export _SYSGEN_DOCKER_REGISTRY_USER="iamapikey"
 export _SYSGEN_DOCKER_REGISTRY_PASSWORD="lmTwt2gWsxJk25XAFATqGqkdWxWWOdsSfJhYL7Gomslo"
@@ -31,16 +35,30 @@ export _SYSGEN_DOCKER_REGISTRY_PASSWORD="lmTwt2gWsxJk25XAFATqGqkdWxWWOdsSfJhYL7G
 _GEN_IMG_PULLSECRET=mf-image-docker-pull
 # create pull secret
 kubectl create secret docker-registry ${_GEN_IMG_PULLSECRET} -n ${_SYSGEN_MF_NAMESPACE} --docker-server=${_SYSGEN_DOCKER_REGISTRY} --docker-username=${_SYSGEN_DOCKER_REGISTRY_USER} --docker-password=${_SYSGEN_DOCKER_REGISTRY_PASSWORD}
-kubectl secrets -n ${_SYSGEN_MF_NAMESPACE} link default mf-image-docker-pull --for=pull
+kubectl secrets -n ${_SYSGEN_MF_NAMESPACE} link default ${_GEN_IMG_PULLSECRET} --for=pull
 
 # Create service account
 sed -i "s|_IMG_REPO_|${_SYSGEN_DOCKER_REGISTRY}/cp|g" ${OPERATOR_YAML}
 sed -i "s|_IMG_PULLSECRET_|${_GEN_IMG_PULLSECRET}|g" ${OPERATOR_YAML}
 sed -i "s|_IMG_PULLSECRET_|${_GEN_IMG_PULLSECRET}|g" ${SA_YAML}
 
+cat ${OPERATOR_YAML}
+
+echo ""
+cat ${SA_YAML}
+echo ""
+
 # Create Operator & service account
-kubectl create -f ${OPERATOR_YAML}
-kubectl create -f ${SA_YAML}
+kubectl apply --namespace ${JOB_NAMESPACE} -f ${OPERATOR_YAML}
+kubectl apply --namespace ${JOB_NAMESPACE} -f ${SA_YAML}
+
+#
+# Check Pod status
+#
+
+#
+# Check if the operator pod is available
+#
 
 ############################
 # setting image names
@@ -102,7 +120,7 @@ if [ "${mfpserver_enabled}" == "true" ] || [ "${mfppush_enabled}" == "true" ] ||
 
 	echo -e "${DB_SECRET_STRING}" >${_GEN_DB_SECRET_NAME}.yaml
 
-	(exec kubectl apply -f ${_GEN_DB_SECRET_NAME}.yaml)
+	kubectl apply --namespace ${JOB_NAMESPACE} -f ${_GEN_DB_SECRET_NAME}.yaml
 
 	RC=$?
 
@@ -111,7 +129,7 @@ if [ "${mfpserver_enabled}" == "true" ] || [ "${mfppush_enabled}" == "true" ] ||
 		exit $RC
 	fi
 
-	(rm -f ${_GEN_DB_SECRET_NAME}.yaml)
+	rm -f ${_GEN_DB_SECRET_NAME}.yaml
 
 fi
 
@@ -127,7 +145,7 @@ if [ "${mfpserver_enabled}" == "true" ]; then
 	_GEN_SERVER_CONSOLE_USERID_BASE64=$(echo -n ${mfpserver_consoleUserid} | base64)
 	_GEN_SERVER_CONSOLE_PASSWORD_BASE64=$(echo -n ${mfpserver_consolePassword} | base64)
 
-	cat <<EOF | kubectl apply -f -
+	cat <<EOF | kubectl apply --namespace ${JOB_NAMESPACE} -f -
 apiVersion: v1
 data:
   MFPF_ADMIN_USER: ${_GEN_SERVER_CONSOLE_USERID_BASE64}
@@ -148,7 +166,7 @@ if [ "${mfpanalytics_enabled}" == "true" ]; then
 	_GEN_ANALYTICS_CONSOLE_USERID_BASE64=$(echo -n ${mfpanalytics_consoleUserid} | base64)
 	_GEN_ANALYTICS_CONSOLE_PASSWORD_BASE64=$(echo -n ${mfpanalytics_consolePassword} | base64)
 
-	cat <<EOF | kubectl apply -f -
+	cat <<EOF | kubectl apply --namespace ${JOB_NAMESPACE} -f -
 apiVersion: v1
 data:
   MFPF_ANALYTICS_ADMIN_USER: ${_GEN_ANALYTICS_CONSOLE_USERID_BASE64}
@@ -169,7 +187,7 @@ if [ "${mfpappcenter_enabled}" == "true" ]; then
 	_GEN_APPCENTER_CONSOLE_USERID_BASE64=$(echo -n ${mfpappcenter_consoleUserid} | base64)
 	_GEN_APPCENTER_CONSOLE_PASSWORD_BASE64=$(echo -n ${mfpappcenter_consolePassword} | base64)
 
-	cat <<EOF | kubectl apply -f -
+	cat <<EOF | kubectl apply --namespace ${JOB_NAMESPACE} -f -
 apiVersion: v1
 data:
   MFPF_APPCNTR_ADMIN_USER: ${_GEN_APPCENTER_CONSOLE_USERID_BASE64}
@@ -201,7 +219,7 @@ sed -i "s|_DB_TYPE_|${db_type}|g" ${CR_YAML}
 sed -i "s|_MFPF_DB_HOST_|${db_host}|g" ${CR_YAML}
 sed -i "s|_MFPF_DB_PORT_|${db_port}|g" ${CR_YAML}
 sed -i "s|_MFPF_DB_NAME_|${db_name}|g" ${CR_YAML}
-sed -i "s|_MFPF_DB_SECRET_|${_GEN_DB_SECRET}|g" ${CR_YAML}
+sed -i "s|_MFPF_DB_SECRET_|${_GEN_DB_SECRET_NAME}|g" ${CR_YAML}
 sed -i "s|_MFPF_DB_SCHEMA_|${db_schema}|g" ${CR_YAML}
 sed -i "s|_MFPF_DB_SSL_ENABLE_|${db_ssl}|g" ${CR_YAML}
 sed -i "s|_MFPF_DB_DRIVER_PVC_|${db_driverPvc}|g" ${CR_YAML}
@@ -215,23 +233,23 @@ sed -i "s|_DBINIT_IMG_REPO_|${_GEN_DBINIT_IMG_REPO}|g" ${CR_YAML}
 sed -i "s|_DBINIT_IMG_TAG_|${_GEN_DBINIT_IMG_TAG}|g" ${CR_YAML}
 sed -i "s|_DBINIT_RR_CPU_|${dbinit_resources_requests_cpu}|g" ${CR_YAML}
 sed -i "s|_DBINIT_RR_MEM_|${dbinit_resources_requests_memory}|g" ${CR_YAML}
-sed -i "s|_DBINIT_RL_CPU_|${dbinit_resources_limit_cpu}|g" ${CR_YAML}
-sed -i "s|_DBINIT_RL_MEM_|${dbinit_resources_limit_memory}|g" ${CR_YAML}
+sed -i "s|_DBINIT_RL_CPU_|${dbinit_resources_limits_cpu}|g" ${CR_YAML}
+sed -i "s|_DBINIT_RL_MEM_|${dbinit_resources_limits_memory}|g" ${CR_YAML}
 
 #
 # mfpserver
 #
 sed -i "s|_SERVER_ENABLE_|${mfpserver_enabled}|g" ${CR_YAML}
 sed -i "s|_SERVER_IMG_REPO_|${_GEN_SERVER_IMG_REPO}|g" ${CR_YAML}
-sed -i "s|_SERVER_IMG_TAG_|${_GEN_SERVER_IMG_TAG_}|g" ${CR_YAML}
+sed -i "s|_SERVER_IMG_TAG_|${_GEN_SERVER_IMG_TAG}|g" ${CR_YAML}
 sed -i "s|_SERVER_CONSOLE_SECRET_|${_GEN_SERVER_CONSOLE_SECRET}|g" ${CR_YAML}
-sed -i "s|_SERVER_ADMINCLIENT_SECRET_|${_GEN_SERVER_ADMINCLIENT_SECRET_}|g" ${CR_YAML}
-sed -i "s|_SERVER_PUSHCLIENT_SECRET_|${_GEN_SERVER_PUSHCLIENT_SECRET_}|g" ${CR_YAML}
-sed -i "s|_SERVER_LUCLIENT_SECRET_|${_GEN_SERVER_LUCLIENT_SECRET_}|g" ${CR_YAML}
-sed -i "s|_SERVER_ICS_ADMINCLIENT_SECRET_ID_|${_GEN_SERVER_ICS_ADMINCLIENT_SECRET_ID_}|g" ${CR_YAML}
-sed -i "s|_SERVER_ICS_ADMINCLIENT_SECRET_PASSWORD_|${_GEN_SERVER_ICS_ADMINCLIENT_SECRET_PASSWORD_}|g" ${CR_YAML}
-sed -i "s|_SERVER_ICS_PUSHCLIENT_SECRETID_|${_GEN_SERVER_ICS_PUSHCLIENT_SECRETID_}|g" ${CR_YAML}
-sed -i "s|_SERVER_ICS_PUSHCLIENT_SECRET_PASSWORD_|${_GEN_SERVER_ICS_PUSHCLIENT_SECRET_PASSWORD_}|g" ${CR_YAML}
+sed -i "s|_SERVER_ADMINCLIENT_SECRET_|${mfpserver_adminClientSecret}|g" ${CR_YAML}
+sed -i "s|_SERVER_PUSHCLIENT_SECRET_|${mfpserver_pushClientSecret}|g" ${CR_YAML}
+sed -i "s|_SERVER_LUCLIENT_SECRET_|${mfpserver_liveupdateClientSecret}|g" ${CR_YAML}
+sed -i "s|_SERVER_ICS_ADMINCLIENT_SECRET_ID_|${mfpserver_internalClientSecretDetails_adminClientSecretId}|g" ${CR_YAML}
+sed -i "s|_SERVER_ICS_ADMINCLIENT_SECRET_PASSWORD_|${mfpserver_internalClientSecretDetails_adminClientSecretPassword}|g" ${CR_YAML}
+sed -i "s|_SERVER_ICS_PUSHCLIENT_SECRETID_|${mfpserver_internalClientSecretDetails_pushClientSecretId}|g" ${CR_YAML}
+sed -i "s|_SERVER_ICS_PUSHCLIENT_SECRET_PASSWORD_|${mfpserver_internalClientSecretDetails_pushClientSecretPassword}|g" ${CR_YAML}
 sed -i "s|_SERVER_REPLICAS_|${mfpserver_replicas}|g" ${CR_YAML}
 sed -i "s|_SERVER_AUTOSCALING_ENABLE_|${mfpserver_autoscaling_enabled}|g" ${CR_YAML}
 sed -i "s|_SERVER_AUTOSCALING_MIN_|${mfpserver_autoscaling_min}|g" ${CR_YAML}
@@ -243,13 +261,13 @@ sed -i "s|_SERVER_CUST_CONFIG_|${mfpserver_customConfiguration}|g" ${CR_YAML}
 sed -i "s|_SERVER_KEYSTORE_SECRET_|${mfpserver_keystoreSecret}|g" ${CR_YAML}
 sed -i "s|_SERVER_RR_CPU_|${mfpserver_resources_requests_cpu}|g" ${CR_YAML}
 sed -i "s|_SERVER_RR_MEM_|${mfpserver_resources_requests_memory}|g" ${CR_YAML}
-sed -i "s|_SERVER_RL_CPU_|${mfpserver_resources_limit_cpu}|g" ${CR_YAML}
-sed -i "s|_SERVER_RL_MEM_|${mfpserver_resources_limit_memory}|g" ${CR_YAML}
+sed -i "s|_SERVER_RL_CPU_|${mfpserver_resources_limits_cpu}|g" ${CR_YAML}
+sed -i "s|_SERVER_RL_MEM_|${mfpserver_resources_limits_memory}|g" ${CR_YAML}
 
 #
 # mfppush
 #
-sed -i "s|_PUSH_ENABLE_|${mfpanalytics_enabled}|g" ${CR_YAML}
+sed -i "s|_PUSH_ENABLE_|${mfppush_enabled}|g" ${CR_YAML}
 sed -i "s|_PUSH_IMG_REPO_|${_GEN_PUSH_IMG_REPO}|g" ${CR_YAML}
 sed -i "s|_PUSH_IMG_TAG_|${_GEN_PUSH_IMG_TAG}|g" ${CR_YAML}
 sed -i "s|_PUSH_REPLICAS_|${mfppush_replicas}|g" ${CR_YAML}
@@ -299,7 +317,7 @@ sed -i "s|_ANALYTICS_AUTOSCALING_MIN_|${mfpanalytics_autoscaling_min}|g" ${CR_YA
 sed -i "s|_ANALYTICS_AUTOSCALING_MAX_|${mfpanalytics_autoscaling_max}|g" ${CR_YAML}
 sed -i "s|_ANALYTICS_AUTOSCALING_TARGET_CPU_|${mfpanalytics_autoscaling_targetcpu}|g" ${CR_YAML}
 sed -i "s|_ANALYTICS_SHARDS_|${mfpanalytics_shards}|g" ${CR_YAML}
-sed -i "s|_ANALYTICS_REPLICAS_PER_SHARD_|${mfpanalytics_replicasPerShard}|g" ${CR_YAML}
+sed -i "s|_ANALYTICS_RPLICAS_PER_SHARD_|${mfpanalytics_replicasPerShard}|g" ${CR_YAML}
 sed -i "s|_ANALYTICS_PERSISTENCE_ENABLE_|${mfpanalytics_persistence_enabled}|g" ${CR_YAML}
 sed -i "s|_ANALYTICS_PERSISTENCE_DYNAPROV_ENABLE_|${mfpanalytics_useDynamicProvisioning_enabled}|g" ${CR_YAML}
 sed -i "s|_ANALYTICS_PERSISTENCE_VOLNAME_|${mfpanalytics_persistence_volumeName}|g" ${CR_YAML}
@@ -339,7 +357,7 @@ sed -i "s|_RECVR_RL_MEM_|${mfpanalytics_recvr_resources_limits_memory}|g" ${CR_Y
 #
 # mfpappcenter
 #
-sed -i "s|_AC_ENABLE_|${_AC_ENABLE}|g" ${CR_YAML}
+sed -i "s|_AC_ENABLE_|${mfpappcenter_enable}|g" ${CR_YAML}
 sed -i "s|_AC_IMG_REPO_|${_GEN_AC_IMG_REPO}|g" ${CR_YAML}
 sed -i "s|_AC_IMG_TAG_|${_GEN_AC_IMG_TAG}|g" ${CR_YAML}
 sed -i "s|_AC_CONSOLE_SECRET_|${_GEN_AC_CONSOLE_SECRET}|g" ${CR_YAML}
@@ -357,5 +375,12 @@ sed -i "s|_AC_RR_MEM_|${mfpappcenter_resources_requests_memory}|g" ${CR_YAML}
 sed -i "s|_AC_RL_CPU_|${mfpappcenter_resources_limits_cpu}|g" ${CR_YAML}
 sed -i "s|_AC_RL_MEM_|${mfpappcenter_resources_limits_memory}|g" ${CR_YAML}
 
+cat ${CR_YAML}
+
+echo ""
 # Create the CR (deploy MF)
-kubectl apply -f ${CR_YAML}
+kubectl apply --namespace ${JOB_NAMESPACE} -f ${CR_YAML}
+
+#
+# Check if the the MF pods is available
+#

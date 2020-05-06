@@ -17,10 +17,10 @@ inventory:
       single_instance: true
       launch_url_schema: https://${mf_console_route_prefix}.${INGRESS_HOSTNAME}
       docs_url: https://cloud.ibm.com/docs/mfp
-      source_url: https://will.bereplaced2.tgz
+      source_url: https://will.bereplaced.tgz
       iam_roles:
         install:
-          - Writer
+        - Writer
         pre_install:
-          - Manager
+        - Manager
   k8sScope: cluster
