@@ -10,7 +10,7 @@
 
 echo "Install procedure starting ..."
 
-CASE_FILES_DIR=./ibm-mobilefoundation/inventory/ibmcloudEnablement/files
+CASE_FILES_DIR=./ibm-mobilefoundation_charandev/inventory/ibmcloudEnablement/files
 
 CR_YAML="${CASE_FILES_DIR}/deploy/crds/charts_v1_mfoperator_cr.yaml"
 OPERATOR_YAML="${CASE_FILES_DIR}/deploy/operator.yaml"
