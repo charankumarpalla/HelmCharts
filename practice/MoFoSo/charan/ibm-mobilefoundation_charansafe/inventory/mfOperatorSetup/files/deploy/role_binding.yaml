@@ -7,8 +7,8 @@
 # Contributors:
 # IBM Corporation - initial API and implementation
 ###############################################################################
-apiVersion: v1
-kind: ServiceAccount
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: mf-operator
   labels:
@@ -16,5 +16,11 @@ metadata:
     app.kubernetes.io/instance: mf-instance
     app.kubernetes.io/managed-by: helm
     release: mf-operator-1.0.15
-imagePullSecrets:
-  - name: charanpullkrishnasecret
+subjects:
+- kind: ServiceAccount
+  name: mf-operator
+  namespace: REPLACE_NAMESPACE
+roleRef:
+  kind: Role
+  name: mf-operator
+  apiGroup: rbac.authorization.k8s.io

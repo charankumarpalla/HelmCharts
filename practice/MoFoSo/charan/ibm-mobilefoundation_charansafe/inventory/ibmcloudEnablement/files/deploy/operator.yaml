@@ -38,6 +38,9 @@ spec:
       hostNetwork: false
       hostPID: false
       serviceAccountName: mf-operator
+      imagePullSecrets:
+        # - name: _IMG_PULLSECRET_
+        - name: charanpullkrishnasecret
       containers:
         - name: mf-operator
           image: us.icr.io/mfaas/mf-operator:1.0.15 # Replace this with the built image name

@@ -140,30 +140,6 @@ rules:
   - '*'
 EOF
 
-# create ClusterRoleBinding
-cat <<EOF | kubectl apply --namespace ${JOB_NAMESPACE} -f -
----	
-apiVersion: rbac.authorization.k8s.io/v1	
-kind: ClusterRoleBinding	
-metadata:	
-  name: mf-operator	
-  labels:	
-    app.kubernetes.io/name: mf-operator	
-    app.kubernetes.io/instance: mf-instance	
-    app.kubernetes.io/managed-by: helm	
-    release: mf-operator-1.0.15	
-roleRef:	
-  apiGroup: rbac.authorization.k8s.io	
-  kind: ClusterRole	
-  name: cluster-admin	
-subjects:	
-  - kind: ServiceAccount	
-    name: mf-operator	
-    namespace: default	
-EOF
-
-echo "------>ClusterRolebinding ran successfully"
-
 # create role-binding
 cat <<EOF | kubectl apply --namespace ${JOB_NAMESPACE} -f -
 ---
@@ -185,6 +161,30 @@ roleRef:
   name: mf-operator
   apiGroup: rbac.authorization.k8s.io
 EOF
+
+# create ClusterRoleBinding
+cat <<EOF | kubectl apply --namespace ${JOB_NAMESPACE} -f -
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: mf-operator
+  labels:
+    app.kubernetes.io/name: mf-operator
+    app.kubernetes.io/instance: mf-instance
+    app.kubernetes.io/managed-by: helm
+    release: mf-operator-1.0.15
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+  - kind: ServiceAccount
+    name: mf-operator
+    namespace: default
+EOF
+
+echo "------>ClusterRolebinding ran successfully"
 
 # create SCC
 cat <<EOF | kubectl apply --namespace ${JOB_NAMESPACE} -f -
@@ -236,7 +236,7 @@ volumes:
 priority: 0
 EOF
 
-oc adm policy add-scc-to-group mf-operator system:serviceaccounts:${JOB_NAMESPACE}
-oc adm policy add-cluster-role-to-user cluster-admin system:serviceaccount:${JOB_NAMESPACE}:mf-operator
+# oc adm policy add-scc-to-group mf-operator system:serviceaccounts:${JOB_NAMESPACE}
+# oc adm policy add-cluster-role-to-user cluster-admin system:serviceaccount:${JOB_NAMESPACE}:mf-operator
 
 echo "Script ran successfully"

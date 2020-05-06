@@ -134,7 +134,7 @@ spec:
   ###############################################################################
   mfpliveupdate:
     enabled: false
-    repository: us.icr.io/mfaas/mfpf-liveupdate
+    repository: us.icr.io/cp/mfpf-liveupdate
     tag: 2.1.9
     db:
       type: "DB_TYPE"
@@ -169,7 +169,7 @@ spec:
   ###############################################################################
   mfpanalytics:
     enabled: false
-    repository: us.icr.io/mfaas/mfpf-analytics
+    repository: us.icr.io/cp/mfpf-analytics
     tag: 2.1.9
     consoleSecret: ""
     replicas: 2
@@ -204,7 +204,7 @@ spec:
   ###############################################################################
   mfpanalytics_recvr:
     enabled: false
-    repository: us.icr.io/mfaas/mfpf-analytics-recvr
+    repository: us.icr.io/cp/mfpf-analytics-recvr
     tag: 2.1.9
     replicas: 1
     autoscaling:
@@ -230,7 +230,7 @@ spec:
   ###############################################################################
   mfpappcenter:
     enabled: false
-    repository: us.icr.io/mfaas//mfpf-appcenter
+    repository: cp.icr.io/cp/mfpf-appcenter
     tag: 2.1.9
     consoleSecret: ""
     db:

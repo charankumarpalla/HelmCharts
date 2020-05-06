@@ -43,10 +43,11 @@ spec:
       s390x: "0 - Do not use"
     image:
       pullPolicy: _IMG_PULLPOLICY_
+      # pullSecret: _IMG_PULLSECRET_
       pullSecret: charanpullkrishnasecret
     ingress:
-      hostname: "_INGRESS_HOSTNAME_"
-      secret: "_INGRESS_SECRET_"
+      hostname: _INGRESS_HOSTNAME_
+      secret: _INGRESS_SECRET_
       sslPassThrough: _SSL_PASSTHROUGH_
     https: _ENABLE_HTTPS_
     dbinit:
