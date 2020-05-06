@@ -45,10 +45,10 @@ spec:
       pullPolicy: _IMG_PULLPOLICY_
       pullSecret: _IMG_PULLSECRET_
     ingress:
-      # hostname: "_INGRESS_HOSTNAME_"
-      # secret: "_INGRESS_SECRET_"
-      hostname: "krciks-c33bf0f22ab59313b3628c493e016b88-0000.us-south.containers.appdomain.cloud"
-      secret: "krciks-c33bf0f22ab59313b3628c493e016b88-0000"
+      hostname: "_INGRESS_HOSTNAME_"
+      secret: "_INGRESS_SECRET_"
+      # hostname: "krciks-c33bf0f22ab59313b3628c493e016b88-0000.us-south.containers.appdomain.cloud"
+      # secret: "krciks-c33bf0f22ab59313b3628c493e016b88-0000"
       sslPassThrough: _SSL_PASSTHROUGH_
     https: _ENABLE_HTTPS_
     dbinit:

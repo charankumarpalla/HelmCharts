@@ -206,7 +206,7 @@ fi
 
 sed -i "s|_IMG_PULLPOLICY_|${image_pullPolicy}|g" ${CR_YAML}
 sed -i "s|_IMG_PULLSECRET_|${_GEN_IMG_PULLSECRET}|g" ${CR_YAML}
-sed -i "s|_INGRESS_HOSTNAME_|${mf_console_route_prefix}.${INGRESS_HOSTNAME}|g" ${CR_YAML}
+sed -i "s|_INGRESS_HOSTNAME_|${INGRESS_HOSTNAME}|g" ${CR_YAML}
 sed -i "s|_INGRESS_SECRET_|${ingress_secret}|g" ${CR_YAML}
 sed -i "s|_SSL_PASSTHROUGH_|${ingress_sslPassThrough}|g" ${CR_YAML}
 sed -i "s|_ENABLE_HTTPS_|${ingress_https}|g" ${CR_YAML}
