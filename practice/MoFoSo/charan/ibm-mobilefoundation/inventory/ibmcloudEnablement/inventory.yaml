@@ -5,7 +5,7 @@ inventory:
     com_ibm_deployment:
       target: ibmcloud
       description: Installation for IBM Cloud
-      type: roks
+      type: iks
       version: 4.1.0
       install_kind: bash
       pre_install_scope: namespace
@@ -20,7 +20,7 @@ inventory:
       source_url: https://will.bereplaced.tgz
       iam_roles:
         install:
-        - Writer
+          - Writer
         pre_install:
-        - Manager
+          - Manager
   k8sScope: cluster
