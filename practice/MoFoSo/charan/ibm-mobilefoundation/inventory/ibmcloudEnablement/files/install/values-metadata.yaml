@@ -19,8 +19,9 @@ mf_console_route_prefix:
     label: "Console route prefix"
     description: "Specifies the prefix to be added to the ingress subdomain to access the deployed service (e.g. mobilefoundation)"
     type: "string"
-    default: "mobilefoundation"
-    required: true
+    # default: "mobilefoundation"
+    required: false
+    # required: true
 ingress_secret:
   __metadata:
     label: "Ingress TLS secret name"
