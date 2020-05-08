@@ -1,0 +1,129 @@
+digests:
+  digestDefs:
+    case:
+      digest: sha256:f32d80a1a1cd8b2d7f7113d9e14d8a764cdbd362cec3e37966c8b4a568bc09b4
+      size: 9005
+      skip: false
+    inventory:
+      mfOperator:
+        imageManifest:
+          images:
+            busybox:1.30.1:
+              references:
+              - digest: sha256:4415a904b1aca178c2450fd54928ab362825e863c0ad5452fd020e92f7a6a47e
+                skip: false
+            mf-operator:1.0.15:
+              references:
+              - digest: sha256:5da71d128c21c114f3527ffddd87695333084004f671ebdc6b3d6920f5493956
+                skip: false
+            mfpf-analytics-recvr:2.1.9:
+              references:
+              - digest: sha256:2977e418b100d219f7585330a5301cf429468bf755577f06c6cd8a300e61d743
+                skip: false
+              - digest: sha256:f2bc667b602a52a5f6a1b08bba898158124204c776b97003fbad8eaf25cba02b
+                skip: false
+              - digest: sha256:d62347a7294802de5d0d164339a9bb5066aa71197812d21b2821f2d7b710daf3
+                skip: false
+            mfpf-analytics:2.1.9:
+              references:
+              - digest: sha256:f42b9bd89215954e061e76753cac92ca442b9f847b8f8301494b531b6db6e6db
+                skip: false
+              - digest: sha256:273216c94bc81e1014b3ee8c2be7f18d722ccf1beb8b851dbc52a0d44312fd1e
+                skip: false
+              - digest: sha256:53837e6d518bb11498ee22fcd59a1882a0119811bf579efd13945cdd975d397a
+                skip: false
+            mfpf-appcenter:2.1.9:
+              references:
+              - digest: sha256:89a6d704507b54676d6d3e42040f6fbd2547f63404ed8d16ca03766fad9d9074
+                skip: false
+              - digest: sha256:13a583412b4c52bed0b755148f4427f13169d31b535e9406a19b5ac7d1e61df3
+                skip: false
+              - digest: sha256:9cca86e1867f2cdaf1e320cdfa2a846ff24c0bc910113ab742890f5f7a3726c3
+                skip: false
+            mfpf-dbinit:2.1.9:
+              references:
+              - digest: sha256:84a24b84bee513afe6992264f370be6d3719d82b938f04053ef826f03c45a4a1
+                skip: false
+              - digest: sha256:c26770369d166927af2ec9013111957fe771f83c83e979cc8f8ec795cf5838ea
+                skip: false
+              - digest: sha256:e7c37bb707b7dbdb01910304dcddfa563dac9115cb88c4957456b1afaf66e96a
+                skip: false
+            mfpf-liveupdate:2.1.9:
+              references:
+              - digest: sha256:cc8e9fd17052404e17f6094fb31aebc9362637a2cf384a8eb99670560946a303
+                skip: false
+              - digest: sha256:abbe59b75310ede23fe9b0d1d703cce72d11d9b58bbb1bfc59b7aeba3d2953e6
+                skip: false
+              - digest: sha256:4977d4eafe68974ff6f9ca2f8fe655053f66f26bfc69a68a958ba2212ed0085c
+                skip: false
+            mfpf-push:2.1.9:
+              references:
+              - digest: sha256:8d572cecc93ab1edc48c7ea37d3f05e6b19d0bcbc44cf1c1ae7378fabd4e7854
+                skip: false
+              - digest: sha256:19067b1c0d73c0b496f4f73bff6f18a26f54b12a63f0df43bb15050f82626a50
+                skip: false
+              - digest: sha256:288c782148f81302201167e9b08c93de79b39d78504c11d0ae7ddaa205ba6650
+                skip: false
+            mfpf-server:2.1.9:
+              references:
+              - digest: sha256:5baca81ab2ee8ee06ddfb67d358578dfd6c1ce3598af198754f6c83c0f7150a1
+                skip: false
+              - digest: sha256:050559c615d74ba8c610c2ee938a159910f621e092cd99ee9e83afa69bd8f4c1
+                skip: false
+              - digest: sha256:cf1d713b29acd374918b44c7032427898615f46d133af3a0b2e47eee1e0af36c
+                skip: false
+            opencontent-common-utils:1.1.2:
+              references:
+              - digest: sha256:491cb692524dc855427a9001698d3e7f12d647f77cfe03c734f9a4b1388326a3
+                skip: false
+        readme:
+          digest: sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+          skip: false
+        resources:
+          resourceDefs:
+            files:
+            - digest: sha256:19838d332282607d8085049ed2603a85ca83517040a72c4385e7d8e56783683c
+              size: 7272
+              skip: false
+            - digest: sha256:fdb27935121da8ddb24ee03ecea82d3c0cbb89ad87cd084e56645aa0eccd35c8
+              size: 7473
+              skip: false
+      mfOperatorSetup:
+        imageManifest: {}
+        readme:
+          digest: sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+          skip: false
+        resources:
+          resourceDefs:
+            files:
+            - digest: sha256:4164a05ef62edacc7275711e9ae332e687dead3408b92d73f87ce53588dab6da
+              size: 1192
+              skip: false
+            - digest: sha256:763f69c020b33ff1120770e403182926c3316273f6531b0f3624a9caed6ae033
+              size: 3032
+              skip: false
+            - digest: sha256:26a8e4df575c2ad880ecf7a3d0d0b6800c564c07ad1cd80a331e60e099458463
+              size: 1750
+              skip: false
+            - digest: sha256:bff62d2f406e5f54e98a1f2f3a9f1c57811eed986169457bd72fb492d8f09824
+              size: 874
+              skip: false
+            - digest: sha256:3c04147f63f2e0d2574f725918ed607b47ec63ee18d42036cc74726bf51c3df7
+              size: 1350
+              skip: false
+            - digest: sha256:01345c8c4e7b9cf1c3dbff9f4f9dcfd1de6aff808f7e82216b674adb18a9dcfa
+              size: 727
+              skip: false
+    license:
+      digest: sha256:354b6c66de02552084a87836027755625da60836ec9777b620c0d1800c157563
+      size: 11346
+      skip: false
+    licenses:
+      license:
+        digest: sha256:87d07c63f5407e58edcac5c8c2af555238e82e12c06448f3f001f7a23156e383
+        size: 111391
+        skip: false
+    readme:
+      digest: sha256:7aa2b714ea863297a2d9413875a2b2a738af75fc0a608b22eec931aa521fe09f
+      size: 2773
+      skip: false

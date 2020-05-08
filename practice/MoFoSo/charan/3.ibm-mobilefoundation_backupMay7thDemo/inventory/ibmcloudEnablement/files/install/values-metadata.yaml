@@ -1,0 +1,1050 @@
+###############################################################################
+# Licensed Materials - Property of IBM.
+# Copyright IBM Corporation 2018. All Rights Reserved.
+# U.S. Government Users Restricted Rights - Use, duplication or disclosure
+# restricted by GSA ADP Schedule Contract with IBM Corp.
+#
+# Contributors:
+# IBM Corporation - initial API and implementation
+###############################################################################
+
+###############################################################################
+# Default values for ibm-mobilefirst-foundation-server
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+###############################################################################
+
+mf_console_route_prefix:
+  __metadata:
+    label: "Console route prefix"
+    description: "Specifies the prefix to be added to the ingress subdomain to access the deployed service (e.g. mobilefoundation)"
+    type: "string"
+    # default: "mobilefoundation"
+    required: false
+    # required: true
+ingress_secret:
+  __metadata:
+    label: "Ingress TLS secret name"
+    description: "Specifies the name of the secret for the certificate that has to be used in the Ingress definition"
+    type: "string"
+    required: false
+ingress_sslPassThrough:
+  __metadata:
+    label: "Enable SSL passthrough"
+    description: "Specifies is the SSL request should be passed through to the Mobile Foundation service - SSL termination occurs in the Mobile Foundation."
+    type: "boolean"
+    required: false
+    default: false
+ingress_https:
+  __metadata:
+    label: "Enable backend communication over HTTPS"
+    description: "To enable intra-component https communication"
+    type: "boolean"
+    required: false
+    hidden: true
+    default: false
+image_pullPolicy:
+  __metadata:
+    name: "pullPolicy"
+    label: "Image pull policy"
+    description: "The default pull policy is IfNotPresent which causes the Kubelet to skip pulling an image if it already exists."
+    type: "string"
+    required: true
+    default: "IfNotPresent"
+    options:
+    - label: "Always"
+      value: "Always"
+    - label: "Never"
+      value: "Never"
+    - label: "IfNotPresent"
+      value: "IfNotPresent"
+image_pullSecret:
+  __metadata:
+    name: "pullSecret"
+    label: "Image pull secret"
+    description: "Secret to use when pulling the image, this secret should be in the target namespace.  Set this when using an image from a private registry"
+    type: "string"
+    required: false
+###############################################################################
+## Database configuration
+###############################################################################
+db_type:
+  __metadata:
+    label: " Database type"
+    description: "The type of the database used for Mobile Foundation components"
+    type: "string"
+    required: true
+    default: "DB2"
+    options:
+      - label: "DB2"
+        value: "DB2"
+      - label: "MySQL"
+        value: "MySQL"
+      - label: "Oracle"
+        value: "Oracle"
+db_host:
+  __metadata:
+    label: "Database hostname"
+    description: "Hostname/IP address for Mobile Foundation database"
+    type: "string"
+    required: true
+db_port:
+  __metadata:
+    label: "Database Port"
+    description: "Database port number for Mobile Foundation to connect"
+    type: "string"
+    required: true
+db_name:
+  __metadata:
+    label: "MF Database Name"
+    description: "Existing database name to store Mobile Foundation data"
+    type: "string"
+    required: true
+db_userid:
+  __metadata:
+    label: "MF Database Username"
+    description: "Provide Mobile Foundation database username."
+    type: "string"
+    required: true
+db_password:
+  __metadata:
+    label: "MF Database Password"
+    description: "Provide Mobile Foundation database password."
+    type: "password"
+    required: true
+db_schema:
+  __metadata:
+    label: "MF Database Schema"
+    description: "Mobile Foundation Database schema name to be created when the Mobile Foundation is deployed. If the schema already exists, it will be reused."
+    type: "string"
+    required: true
+db_ssl:
+  __metadata:
+    label: "Connect to database over SSL port"
+    description: "Whether or not the database connection should be made over SSL. Applicable only if the database type selected is DB2"
+    type: "boolean"
+    required: false
+    default: false
+db_driverPvc:
+  __metadata:
+    label: "Persistent Volume Claim to access the JDBC Database Driver"
+    description: "Specify the name of the persistent volume claim that hosts the JDBC database driver. Required if the database type selected is not DB2"
+    type: "string"
+    required: false
+db_adminCredentialsSecret:
+  __metadata:
+    label: "MF Server DB Admin Secret"
+    description: "If you have enabled DB initialization ,then provide the secret to create database tables and schemas for Mobile Foundation components."
+    type: "string"
+    required: false
+###############################################################################
+## Database initialization configuration
+###############################################################################
+dbinit_enabled:
+  __metadata:
+    label: "Enable Database Initialization"
+    description: "Specify whether to create database initialization and schema creation for Server, Push and Application Center deployments (Only for IBM DB2)."
+    type: "boolean"
+    required: true
+    default: true
+dbinit_repository:
+  __metadata:
+    label: "Database Initialization Image repository (Optional)"
+    description: "Image registry to pull Mobile Foundation database initialization image from"
+    type: "string"
+    required: true
+    default: "cp.stg.icr.io/cp/mfpf-dbinit"
+dbinit_tag:
+  __metadata:
+    label: "Image tag"
+    description: "A tag is a label applied to a image in a repository. Tags are how various images in a repository are distinguished from each other."
+    type: "string"
+    required: true
+    default: "2.1.9"
+dbinit_resources_requests_cpu:
+  __metadata: 
+    label: "CPU request"
+    description: "The minimum required CPU core. Specify integers, fractions (e.g. 0.5), or millicore values(e.g. 100m, where 100m is equivalent to .1 core)."
+    type: "string"
+    required: true 
+    default: "900m"
+dbinit_resources_requests_memory:
+  __metadata: 
+    label: "Memory request"
+    description: "The minimum memory in bytes. Specify integers with one of these suffixes: E, P, T, G, M, K, or power-of-two equivalents: Ei, Pi, Ti, Gi, Mi, Ki."
+    type: "string"
+    required: true 
+    default: "900Mi"
+dbinit_resources_limits_cpu:
+  __metadata: 
+    label: "CPU limit"
+    description: "The upper limit of CPU core. Specify integers, fractions (e.g. 0.5), or millicores values(e.g. 100m, where 100m is equivalent to .1 core)."
+    type: "string"
+    required: true 
+    default: "900m"
+dbinit_resources_limits_memory:
+  __metadata: 
+    label: "Memory limit"
+    description: "The memory upper limit in bytes. Specify integers with suffixes: E, P, T, G, M, K, or power-of-two equivalents: Ei, Pi, Ti, Gi, Mi, Ki. "
+    type: "string"
+    required: true
+    default: "900Mi"
+###############################################################################
+## MFP Server configuration
+###############################################################################
+mfpserver_enabled:
+  __metadata:
+    label: "Enable Mobile Foundation Server"
+    description: "Specify whether to enable Mobile Foundation Server."
+    type: "boolean"
+    required: true
+    default: true
+mfpserver_repository:
+  __metadata:
+    label: "Server Image repository"
+    description: "Image registry to pull Mobile Foundation Server image from."
+    type: "string"
+    required: true
+    default: "cp.stg.icr.io/cp/mfpf-server"
+mfpserver_tag:
+  __metadata:
+    label: "Image tag"
+    description: "A tag is a label applied to a image in a repository. Tags are how various images in a repository are distinguished from each other."
+    type: "string"
+    required: true
+    default: "2.1.9"
+mfpserver_consoleUserid:
+  __metadata:
+    label: "Console Login Userid"
+    description: "Set Login Userid for Mobile Foundation Server Operations console"
+    type: "string"
+    required: false
+    default: "admin"
+mfpserver_consolePassword:
+  __metadata:
+    label: "Console Login Password"
+    description: "Set Login Password for Mobile Foundation Server Operations console"
+    type: "string"
+    required: false
+    default: "admin"
+mfpserver_internalClientSecretDetails_adminClientSecretId:
+  __metadata:
+    label: "Admin Client Secret Id"
+    description: "Default Mobile Foundation Server Admin Client Secret Id"
+    type: "string"
+    required: false
+    hidden: true
+    default: "mfpadmin"
+mfpserver_internalClientSecretDetails_adminClientSecretPassword:
+  __metadata:
+    label: "Admin Client Secret Password"
+    description: "Default Mobile Foundation Server Admin Client Secret Password"
+    type: "string"
+    required: false
+    hidden: true
+    default: "nimdapfm"
+mfpserver_internalClientSecretDetails_pushClientSecretId:
+  __metadata:
+    label: "Push Client Secret Id"
+    description: "Default Push Client Secret Password"
+    type: "string"
+    required: false
+    hidden: true
+    default: "push"
+mfpserver_internalClientSecretDetails_pushClientSecretPassword:
+  __metadata:
+    label: "Push Client Secret Id"
+    description: "Default Push Client Secret Password"
+    type: "string"
+    required: false
+    hidden: true
+    default: "hsup"
+mfpserver_adminClientSecret:
+  __metadata:
+    label: "Admin Client Secret"
+    description: "Admin Confidential Client Secret"
+    type: "string"
+    required: false
+mfpserver_pushClientSecret:
+  __metadata:
+    label: "Push Client Secret"
+    description: "Push Confidential Client Secret"
+    type: "string"
+    required: false
+mfpserver_liveupdateClientSecret:
+  __metadata:
+    label: "Liveupdate Client Secret"
+    description: "Liveupdate Confidential Client Secret"
+    type: "string"
+    required: false           
+mfpserver_replicas:
+  __metadata:
+    label: "Replica Count"
+    description: "Number of Pods requested"
+    type: "number"
+    required: true
+    default: "2"
+mfpserver_autoscaling_enabled:
+  __metadata:
+    name: "enabled"
+    label: "Enable autoscaling"
+    description: "Enables a Horizontal Pod Autoscaler. Enabling this field disables the 'replicas' field."
+    type: "boolean"
+    required: false
+    default: false
+mfpserver_autoscaling_targetcpu:
+  __metadata:
+    name: "targetcpu"
+    label: "Target CPU utilization percentage"
+    description: "Target average CPU utilization (represented as a percentage of requested CPU) over all the pods."
+    type: "number"
+    required: true
+    default: 50
+mfpserver_autoscaling_min:
+  __metadata:
+    name: "min"
+    label: "Minimum number of replicas"
+    description: "Lower limit for the number of pods that can be set by the autoscaler."
+    type: "number"
+    required: true
+    default: 1
+mfpserver_autoscaling_max:
+  __metadata:
+    name: "max"
+    label: "Maximum number of replicas"
+    description: "Upper limit for the number of pods that can be set by the autoscaler. It cannot be lower than 'min'."
+    type: "number"
+    required: true
+    default: 10
+mfpserver_pdb_enabled:
+  __metadata:
+    label: "Enable Pod Disruption Budget"
+    description: "Enables application protection availability during a cluster node maintenance"
+    type: "boolean"
+    required: false
+    default: true
+mfpserver_pdb_min:
+  __metadata:
+    label: "Minimum number of replicas"
+    description: "Minimum number of probe replicas that must be available during pod eviction"
+    type: "string"
+    required: false
+    default: "1"
+mfpserver_customConfiguration:
+  __metadata:
+    label: "Custom server configuration (Optional)"
+    description: "Provide server specific additional configuration reference to a pre-created config map"
+    type: "string"
+    required: false
+  mfpserver_keystoreSecret:
+  __metadata:
+    label: "Keystores Secret Name (Optional)"
+    description: "To override default Keystore,provide existing secret name where keystore, truststore, and their passwords are avaiable. view README for more info"
+    type: "string"
+    required: false
+mfpserver_resources_requests_cpu:
+  __metadata: 
+    label: "CPU request"
+    description: "The minimum required CPU core. Specify integers, fractions (e.g. 0.5), or millicore values(e.g. 100m, where 100m is equivalent to .1 core)."
+    type: "string"
+    required: true 
+    default: "1000m"
+mfpserver_resources_requests_memory:
+  __metadata: 
+    label: "Memory request"
+    description: "The minimum memory in bytes. Specify integers with one of these suffixes: E, P, T, G, M, K, or power-of-two equivalents: Ei, Pi, Ti, Gi, Mi, Ki."
+    type: "string"
+    required: true 
+    default: "1536Mi"
+mfpserver_resources_limits_cpu:
+  __metadata: 
+    label: "CPU limit"
+    description: "The upper limit of CPU core. Specify integers, fractions (e.g. 0.5), or millicores values(e.g. 100m, where 100m is equivalent to .1 core)."
+    type: "string"
+    required: true 
+    default: "2000m"
+mfpserver_resources_limits_memory:
+  __metadata: 
+    label: "Memory limit"
+    description: "The memory upper limit in bytes. Specify integers with suffixes: E, P, T, G, M, K, or power-of-two equivalents: Ei, Pi, Ti, Gi, Mi, Ki. "
+    type: "string"
+    required: true 
+    default: "4096Mi"
+###############################################################################
+## MFP Push Configuration
+###############################################################################
+mfppush_enabled:
+  __metadata:
+    label: "Enable Mobile Foundation Push"
+    description: "Specify whether to enable Mobile Foundation Push."
+    type: "boolean"
+    required: false
+    default: true
+mfppush_repository:
+  __metadata:
+    label: "Push Image repository"
+    description: "Image registry to pull Mobile Foundation Push image from"
+    type: "string"
+    required: true
+    default: "cp.stg.icr.io/cp/mfpf-push"
+mfppush_tag:
+  __metadata:
+    label: "Image tag"
+    description: "A tag is a label applied to a image in a repository. Tags are how various images in a repository are distinguished from each other."
+    type: "string"
+    required: true
+    default: "2.1.9"
+mfppush_replicas:
+  __metadata:
+    label: "Replica Count"
+    description: "Number of Pods requested"
+    type: "number"
+    required: true
+    default: 2
+mfppush_autoscaling_enabled:
+  __metadata:
+    name: "enabled"
+    label: "Enable autoscaling"
+    description: "Enables a Horizontal Pod Autoscaler. Enabling this field disables the 'replicas' field."
+    type: "boolean"
+    required: false
+    default: false
+mfppush_autoscaling_targetcpu:
+  __metadata:
+    name: "targetcpu"
+    label: "Target CPU utilization percentage"
+    description: "Target average CPU utilization (represented as a percentage of requested CPU) over all the pods."
+    type: "number"
+    required: true
+    default: 50
+mfppush_autoscaling_min:
+  __metadata:
+    name: "min"
+    label: "Minimum number of replicas"
+    description: "Lower limit for the number of pods that can be set by the autoscaler."
+    type: "number"
+    required: true
+    default: 1
+mfppush_autoscaling_max:
+  __metadata:
+    name: "max"
+    label: "Maximum number of replicas"
+    description: "Upper limit for the number of pods that can be set by the autoscaler. It cannot be lower than 'min'."
+    type: "number"
+    required: true
+    default: 10
+mfppush_pdb_enabled:
+  __metadata:
+    label: "Enable Pod Disruption Budget"
+    description: "Enables application protection availability during a cluster node maintenance"
+    type: "boolean"
+    required: false
+    default: true
+mfppush_pdb_min:
+  __metadata:
+    label: "Minimum number of replicas"
+    description: "Minimum number of probe replicas that must be available during pod eviction"
+    type: "string"
+    required: false
+    default: "1"
+mfppush_customConfiguration:
+  __metadata:
+    label: "Custom server configuration (Optional)"
+    description: "Provide server specific additional configuration reference to a pre-created config map"
+    type: "string"
+    required: false
+mfppush_keystoreSecret:
+  __metadata:
+    label: "Keystores Secret Name (Optional)"
+    description: "To override default Keystore,provide existing secret name where keystore, truststore, and their passwords are avaiable. view README for more info"
+    type: "string"
+    required: false
+mfppush_resources_requests_cpu:
+  __metadata: 
+    label: "CPU request"
+    description: "The minimum required CPU core. Specify integers, fractions (e.g. 0.5), or millicore values(e.g. 100m, where 100m is equivalent to .1 core)."
+    type: "string"
+    required: true 
+    default: "750m"
+mfppush_resources_requests_memory:
+  __metadata: 
+    label: "Memory request"
+    description: "The minimum memory in bytes. Specify integers with one of these suffixes: E, P, T, G, M, K, or power-of-two equivalents: Ei, Pi, Ti, Gi, Mi, Ki."
+    type: "string"
+    required: true 
+    default: "1024Mi"
+mfppush_resources_limits_cpu:
+  __metadata: 
+    label: "CPU limit"
+    description: "The upper limit of CPU core. Specify integers, fractions (e.g. 0.5), or millicores values(e.g. 100m, where 100m is equivalent to .1 core)."
+    type: "string"
+    required: true 
+    default: "1000m"
+mfppush_resources_limits_memory:
+  __metadata: 
+    label: "Memory limit"
+    description: "The memory upper limit in bytes. Specify integers with suffixes: E, P, T, G, M, K, or power-of-two equivalents: Ei, Pi, Ti, Gi, Mi, Ki. "
+    type: "string"
+    required: true 
+    default: "2048Mi"
+###############################################################################
+## MFP Liveupdate configuration
+###############################################################################
+mfpliveupdate_enabled:
+  __metadata:
+    label: "Enable Mobile Foundation Liveupdate"
+    description: "Specify whether to enable Mobile Foundation Liveupdate."
+    type: "boolean"
+    required: false
+    default: false
+mfpliveupdate_repository:
+  __metadata:
+    label: "Liveupdate Image repository"
+    description: "Image registry to pull Mobile Foundation Liveupdate image from."
+    type: "string"
+    required: true
+    default: "cp.stg.icr.io/cp/mfpf-liveupdate"
+mfpliveupdate_tag:
+  __metadata:
+    label: "Image tag"
+    description: "Image Tag. A tag is a label applied to a image in a repository. Tags are how various images in a repository are distinguished from each other."
+    type: "string"
+    required: true
+    default: "2.1.9"     
+mfpliveupdate_replicas:
+  __metadata:
+    label: "Replica Count"
+    description: "Number of Pods requested"
+    type: "number"
+    required: true
+    default: 2
+mfpliveupdate_autoscaling_enabled:
+  __metadata:
+    name: "enabled"
+    label: "Enable autoscaling"
+    description: "Enables a Horizontal Pod Autoscaler. Enabling this field disables the 'replicas' field."
+    type: "boolean"
+    required: false
+    default: false
+mfpliveupdate_autoscaling_targetcpu:
+  __metadata:
+    name: "targetcpu"
+    label: "Target CPU utilization percentage"
+    description: "Target average CPU utilization (represented as a percentage of requested CPU) over all the pods."
+    type: "number"
+    required: true
+    default: 50
+mfpliveupdate_autoscaling_min:
+  __metadata:
+    name: "min"
+    label: "Minimum number of replicas"
+    description: "Lower limit for the number of pods that can be set by the autoscaler."
+    type: "number"
+    required: true
+    default: 1
+mfpliveupdate_autoscaling_max:
+  __metadata:
+    name: "max"
+    label: "Maximum number of replicas"
+    description: "Upper limit for the number of pods that can be set by the autoscaler. It cannot be lower than 'min'."
+    type: "number"
+    required: true
+    default: 10
+mfpliveupdate_pdb_enabled:
+  __metadata:
+    label: "Enable Pod Disruption Budget"
+    description: "Enables application protection availability during a cluster node maintenance"
+    type: "boolean"
+    default: true
+mfpliveupdate_pdb_min:
+  __metadata:
+    label: "Minimum number of replicas"
+    description: "Minimum number of probe replicas that must be available during pod eviction"
+    type: "string"
+    required: false
+    default: "1"
+mfpliveupdate_customConfiguration:
+  __metadata:
+    label: "Custom server configuration (Optional)"
+    description: "Provide liveupdate specific additional configuration reference to a pre-created config map"
+    type: "string"
+    required: false
+mfpliveupdate_keystoreSecret:
+  __metadata:
+    label: "Keystores Secret Name (Optional)"
+    description: "To override default Keystore,provide existing secret name where keystore, truststore, and their passwords are avaiable. view README for more info"
+    type: "string"
+    required: false
+mfpliveupdate_resources_requests_cpu:
+  __metadata: 
+    label: "CPU request"
+    description: "The minimum required CPU core. Specify integers, fractions (e.g. 0.5), or millicore values(e.g. 100m, where 100m is equivalent to .1 core)."
+    type: "string"
+    required: true 
+    default: "750m"
+mfpliveupdate_resources_requests_memory:
+  __metadata: 
+    label: "Memory request"
+    description: "The minimum memory in bytes. Specify integers with one of these suffixes: E, P, T, G, M, K, or power-of-two equivalents: Ei, Pi, Ti, Gi, Mi, Ki."
+    type: "string"
+    required: true 
+    default: "1024Mi"
+mfpliveupdate_resources_limits_cpu:
+  __metadata: 
+    label: "CPU limit"
+    description: "The upper limit of CPU core. Specify integers, fractions (e.g. 0.5), or millicores values(e.g. 100m, where 100m is equivalent to .1 core)."
+    type: "string"
+    required: true 
+    default: "1000m"
+mfpliveupdate_resources_limits_memory:
+  __metadata: 
+    label: "Memory limit"
+    description: "The memory upper limit in bytes. Specify integers with suffixes: E, P, T, G, M, K, or power-of-two equivalents: Ei, Pi, Ti, Gi, Mi, Ki. "
+    type: "string"
+    required: true
+    default: "2048Mi"
+###############################################################################
+## MFP Analytics Configuration
+###############################################################################
+mfpanalytics_enabled:
+  __metadata:
+    label: "Enable Analytics"
+    description: "Specify whether to enable Mobile Foundation Analytics."
+    type: "boolean"
+    required: false
+    default: false
+mfpanalytics_repository:
+  __metadata:
+    label: "Analytics image repository"
+    description: "Image registry to pull Mobile Foundation Analytics image from."
+    type: "string"
+    required: true
+    default: "cp.stg.icr.io/cp/mfpf-analytics"
+mfpanalytics_tag:
+  __metadata:
+    label: "Image tag"
+    description: "A tag is a label applied to a image in a repository. Tags are how various images in a repository are distinguished from each other."
+    type: "string"
+    required: true
+    default: "2.1.9"
+mfpanalytics_consoleUserid:
+  __metadata:
+    label: "Console Login Userid"
+    description: "Set Login Userid for Analytics console "
+    type: "string"
+    required: false
+    default: "admin"
+mfpanalytics_consolePassword:
+  __metadata:
+    label: "Console Login Password"
+    description: "Set Login Password for Analytics console "
+    type: "string"
+    required: false
+    default: "admin"
+mfpanalytics_replicas:
+  __metadata:
+    label: "Replica Count"
+    description: "Number of Pods requested"
+    type: "number"
+    required: true
+    default: "2"
+mfpanalytics_autoscaling_enabled:
+  __metadata:
+    name: "enabled"
+    label: "Enable autoscaling"
+    description: "Enables a Horizontal Pod Autoscaler. Enabling this field disables the 'replicas' field."
+    type: "boolean"
+    default: false
+    required: false
+mfpanalytics_autoscaling_targetcpu:
+  __metadata:
+    name: "targetcpu"
+    label: "Target CPU utilization percentage"
+    description: "Target average CPU utilization (represented as a percentage of requested CPU) over all the pods."
+    type: "number"
+    required: true
+    default: 50
+mfpanalytics_autoscaling_min:
+  __metadata:
+    name: "min"
+    label: "Minimum number of replicas"
+    description: "Lower limit for the number of pods that can be set by the autoscaler."
+    type: "number"
+    required: true
+    default: 1
+mfpanalytics_autoscaling_max:
+  __metadata:
+    name: "max"
+    label: "Maximum number of replicas"
+    description: "Upper limit for the number of pods that can be set by the autoscaler. It cannot be lower than 'min'."
+    type: "number"
+    required: true
+    default: 10
+mfpanalytics_pdb_enabled:
+  __metadata:
+    label: "Enable Pod Disruption Budget"
+    description: "Enables application protection availability during a cluster node maintenance"
+    type: "boolean"
+    required: false
+    default: true
+mfpanalytics_pdb_min:
+  __metadata:
+    label: "Minimum number of replicas"
+    description: "Minimum number of probe replicas that must be available during pod eviction"
+    type: "string"
+    required: false
+    default: "1"
+mfpanalytics_shards:
+  __metadata:
+    label: "Number of shards"
+    description: "Number of Elasticsearch shards to be set for the cluster"
+    type: "string"
+    required: true
+    default: "3"
+mfpanalytics_replicasPerShard:
+  __metadata:
+    label: "Analytics Replicas per shard"
+    description: "Number of Analytics Replicas per shard for the cluster"
+    type: "string"
+    required: true
+    default: "1"
+mfpanalytics_persistence_enabled:
+  __metadata:
+      label: "Enable persistence for Analytics"
+      description: "On enabling persistent storage, the Operational Analytics data is preserved if the pod is stopped."
+      type: "boolean"
+      required: true
+      default: true
+mfpanalytics_useDynamicProvisioning_enabled:
+  __metadata:
+      label: "Use dynamic provisioning"
+      description: "Select this checkbox to allow the cluster to automatically provision new storage resource and create PersistentVolume objects. Defaults to false"
+      type: "boolean"
+      required: true
+      default: true
+mfpanalytics_persistence_volumeName:
+  __metadata:
+    name: "data-stor"
+    label: "Name of the persistent volume claim"
+    description: "By default a persistent volume claim will be created with this name."
+    type: "string"
+    required: false
+    default: "data-stor"
+mfpanalytics_persistence_claimName:
+  __metadata:
+    name: "claimName"
+    label: "Existing volume claim"
+    description: "By default a new persistent volume claim will be created. Specify an existing claim here if one is available."
+    type: "string"
+    required: false
+    default: ""
+mfpanalytics_persistence_storageClassName:
+  __metadata:
+    name: "storageClassName"
+    label: "Existing storage class name"
+    description: "Choose a specific storage class name. Defaults to the default storage class in the cluster."
+    type: "string"
+    required: false
+    default: "ibmc-file-silver"
+mfpanalytics_persistence_size:
+  __metadata:
+    name: "size"
+    label: "Size of the volume claim"
+    description: "Defaults to 20Gi of storage request. Choose a different size of disk if needed."
+    type: "string"
+    required: true
+    default: "20Gi"
+mfpanalytics_customConfiguration:
+  __metadata:
+    label: "Custom server configuration (Optional)"
+    description: "Provide server specific additional configuration reference to a pre-created config map"
+    type: "string"
+    required: false
+mfpanalytics_keystoreSecret:
+  __metadata:
+    label: "Keystores Secret Name (Optional)"
+    description: "To override default Keystore,provide existing secret name where keystore, truststore, and their passwords are avaiable. view README for more info"
+    type: "string"
+    required: false
+mfpanalytics_resources_requests_cpu:
+  __metadata:
+    label: "CPU request"
+    description: "The minimum required CPU core. Specify integers, fractions (e.g. 0.5), or millicore values(e.g. 100m, where 100m is equivalent to .1 core)."
+    type: "string"
+    required: true
+    default: "750m"
+mfpanalytics_resources_requests_memory:
+  __metadata:
+    label: "Memory request"
+    description: "The minimum memory in bytes. Specify integers with one of these suffixes: E, P, T, G, M, K, or power-of-two equivalents: Ei, Pi, Ti, Gi, Mi, Ki."
+    type: "string"
+    required: true
+    default: "1024Mi"
+mfpanalytics_resources_requests_limits_cpu:
+  __metadata:
+    label: "CPU limit"
+    description: "The upper limit of CPU core. Specify integers, fractions (e.g. 0.5), or millicores values(e.g. 100m, where 100m is equivalent to .1 core)."
+    type: "string"
+    required: true
+    default: "1000m"
+mfpanalytics_resources_requests_limits_memory:
+  __metadata:
+    label: "Memory limit"
+    description: "The memory upper limit in bytes. Specify integers with suffixes: E, P, T, G, M, K, or power-of-two equivalents: Ei, Pi, Ti, Gi, Mi, Ki. "
+    type: "string"
+    required: true
+    default: "2048Mi"
+###############################################################################
+## MFP Analytics Receiver Configuration
+###############################################################################
+mfpanalytics_recvr_enabled:
+  __metadata:
+    label: "Enable Analytics Receiver"
+    description: "Specify whether to enable Mobile Foundation Analytics Receiver."
+    type: "boolean"
+    required: false
+    default: false
+mfpanalytics_recvr_repository:
+  __metadata:
+    label: "Analytics Receiver image repository"
+    description: "Image registry to pull Mobile Foundation Analytics Receiver image from."
+    type: "string"
+    required: true
+    default: "cp.stg.icr.io/cp/mfpf-analytics-recvr"
+mfpanalytics_recvr_tag:
+  __metadata:
+    label: "Image tag"
+    description: "A tag is a label applied to a image in a repository. Tags are how various images in a repository are distinguished from each other."
+    type: "string"
+    required: true
+    default: "2.1.9"
+mfpanalytics_recvr_replicas:
+  __metadata:
+    label: "Replica Count"
+    description: "Number of Pods requested"
+    type: "number"
+    required: true
+    default: 1
+mfpanalytics_recvr_autoscaling_enabled:
+  __metadata:
+    name: "enabled"
+    label: "Enable autoscaling"
+    description: "Enables a Horizontal Pod Autoscaler. Enabling this field disables the 'replicas' field."
+    type: "boolean"
+    required: false
+    default: false
+mfpanalytics_recvr_autoscaling_targetcpu:
+  __metadata:
+    name: "targetcpu"
+    label: "Target CPU utilization percentage"
+    description: "Target average CPU utilization (represented as a percentage of requested CPU) over all the pods."
+    type: "number"
+    required: true
+    default: 50
+mfpanalytics_recvr_autoscaling_min:
+  __metadata:
+    name: "min"
+    label: "Minimum number of replicas"
+    description: "Lower limit for the number of pods that can be set by the autoscaler."
+    type: "number"
+    required: true
+    default: 1
+mfpanalytics_recvr_autoscaling_max:
+  __metadata:
+    name: "max"
+    label: "Maximum number of replicas"
+    description: "Upper limit for the number of pods that can be set by the autoscaler. It cannot be lower than 'min'."
+    type: "number"
+    required: true
+    default: 10
+mfpanalytics_recvr_pdb_enabled:
+  __metadata:
+    label: "Enable Pod Disruption Budget"
+    description: "Enables application protection availability during a cluster node maintenance"
+    type: "boolean"
+    required: false
+    default: true
+mfpanalytics_recvr_pdb_min:
+  __metadata:
+    label: "Minimum number of replicas"
+    description: "Minimum number of probe replicas that must be available during pod eviction"
+    type: "string"
+    required: false
+    default: "1"
+mfpanalytics_recvr_analyticsRecvrSecret:
+  __metadata:
+    label: "Analytics Receiver secret"
+    description: "Provide secret that has Analytics Receiver credentials, View Readme Prerequisites "
+    type: "string"
+    required: false
+mfpanalytics_recvr_customConfiguration:
+  __metadata:
+    label: "Custom server configuration (Optional)"
+    description: "Provide server specific additional configuration reference to a pre-created config map"
+    type: "string"
+    required: false
+mfpanalytics_recvr_keystoreSecret:
+  __metadata:
+    label: "Keystores Secret Name (Optional)"
+    description: "To override default Keystore,provide existing secret name where keystore, truststore, and their passwords are avaiable. view README for more info"
+    type: "string"
+    required: false
+mfpanalytics_recvr_resources_requests_cpu:
+  __metadata:
+    label: "CPU request"
+    description: "The minimum required CPU core. Specify integers, fractions (e.g. 0.5), or millicore values(e.g. 100m, where 100m is equivalent to .1 core)."
+    type: "string"
+    required: true
+    default: "750m"
+mfpanalytics_recvr_resources_requests_memory:
+  __metadata:
+    label: "Memory request"
+    description: "The minimum memory in bytes. Specify integers with one of these suffixes: E, P, T, G, M, K, or power-of-two equivalents: Ei, Pi, Ti, Gi, Mi, Ki."
+    type: "string"
+    required: true
+    default: "1024Mi"
+mfpanalytics_recvr_resources_limits_cpu:
+  __metadata:
+    label: "CPU limit"
+    description: "The upper limit of CPU core. Specify integers, fractions (e.g. 0.5), or millicores values(e.g. 100m, where 100m is equivalent to .1 core)."
+    type: "string"
+    required: true
+    default: "1000m"
+mfpanalytics_recvr_resources_limits_memory:
+  __metadata:
+    label: "Memory limit"
+    description: "The memory upper limit in bytes. Specify integers with suffixes: E, P, T, G, M, K, or power-of-two equivalents: Ei, Pi, Ti, Gi, Mi, Ki. "
+    type: "string"
+    required: true
+    default: "2048Mi"
+###############################################################################
+## MFP Application Center Configuration
+###############################################################################
+mfpappcenter_enabled:
+  __metadata:
+    label: "Enable Application Center"
+    description: "Specify whether to enable Application Center."
+    type: "boolean"
+    default: false
+    required: false
+mfpappcenter_repository:
+  __metadata:
+    label: "Application Center Image repository"
+    description: "Image registry to pull Mobile Foundation Application Center image from."
+    type: "string"
+    required: true
+    default: "cp.stg.icr.io/cp/mfpf-appcenter"
+mfpappcenter_tag:
+  __metadata:
+    label:  "Image tag"
+    description: "A tag is a label applied to a image in a repository. Tags are how various images in a repository are distinguished from each other."
+    type: "string"
+    required: true
+    default: "2.1.9"
+mfpappcenter_consoleUserid:
+  __metadata:
+    label: "Console Login Userid"
+    description: "Set Login Userid for Application Center console "
+    type: "string"
+    required: false
+    default: "admin"
+mfpappcenter_consolePassword:
+  __metadata:
+    label: "Console Login Password"
+    description: "Set Login Password for Application Center console "
+    type: "string"
+    required: false
+    default: "admin"
+mfpappcenter_customConfiguration:
+  __metadata:
+    label: "Custom server configuration (Optional)"
+    description: "Provide server specific additional configuration reference to a pre-created config map"
+    type: "string"
+    required: false
+mfpappcenter_keystoreSecret:
+  __metadata:
+    label: "Keystores Secret Name (Optional)"
+    description: "To override default Keystore,provide existing secret name where keystore, truststore, and their passwords are avaiable. view README for more info"
+    type: "string"
+    required: false
+mfpappcenter_replicas:
+  __metadata:
+    label: "Replica Count"
+    description: "Number of Pods requested"
+    type: "number"
+    required: true
+    default: 1
+mfpappcenter_autoscaling_enabled:
+  __metadata:
+    name: "enabled"
+    label: "Enable autoscaling"
+    description: "Enables a Horizontal Pod Autoscaler. Enabling this field disables the 'replicas' field."
+    type: "boolean"
+    default: false
+    required: false
+mfpappcenter_autoscaling_targetcpu:
+  __metadata:
+    name: "targetcpu"
+    label: "Target CPU utilization percentage"
+    description: "Target average CPU utilization (represented as a percentage of requested CPU) over all the pods."
+    type: "number"
+    required: true
+    default: 50
+mfpappcenter_autoscaling_min:
+  __metadata:
+    name: "min"
+    label: "Minimum number of replicas"
+    description: "Lower limit for the number of pods that can be set by the autoscaler."
+    type: "number"
+    required: true
+    default: 1
+mfpappcenter_autoscaling_max:
+  __metadata:
+    name: "max"
+    label: "Maximum number of replicas"
+    description: "Upper limit for the number of pods that can be set by the autoscaler. It cannot be lower than 'min'."
+    type: "number"
+    required: true
+    default: 10
+mfpappcenter_pdb_enabled:
+  __metadata:
+    label: "Enable Pod Disruption Budget"
+    description: "Enables application protection availability during a cluster node maintenance"
+    type: "boolean"
+    required: false
+    default: true
+mfpappcenter_pdb_min:
+  __metadata:
+    label: "Minimum number of replicas"
+    description: "Minimum number of probe replicas that must be available during pod eviction"
+    type: "string"
+    required: false
+    default: "1"
+mfpappcenter_resources_requests_cpu:
+  __metadata:
+    label: "CPU request"
+    description: "The minimum required CPU core. Specify integers, fractions (e.g. 0.5), or millicore values(e.g. 100m, where 100m is equivalent to .1 core)."
+    type: "string"
+    required: true
+    default: "750m"
+mfpappcenter_resources_requests_memory:
+  __metadata:
+    label: "Memory request"
+    description: "The minimum memory in bytes. Specify integers with one of these suffixes: E, P, T, G, M, K, or power-of-two equivalents: Ei, Pi, Ti, Gi, Mi, Ki."
+    type: "string"
+    required: true
+    default: "1024Mi"
+mfpappcenter_resources_limits_cpu:
+  __metadata:
+    label: "CPU limit"
+    description: "The upper limit of CPU core. Specify integers, fractions (e.g. 0.5), or millicores values(e.g. 100m, where 100m is equivalent to .1 core)."
+    type: "string"
+    required: true
+    default: "1000m"
+mfpappcenter_resources_limits_memory:
+  __metadata:
+    label: "Memory limit"
+    description: "The memory upper limit in bytes. Specify integers with suffixes: E, P, T, G, M, K, or power-of-two equivalents: Ei, Pi, Ti, Gi, Mi, Ki."
+    type: "string"
+    required: true
+    default: "2048Mi"

@@ -46,29 +46,35 @@ read -r -d '' OVERRIDES_VAR << EOM
 EOM
 
 oc run perms-pod --overrides="${OVERRIDES_VAR}"  --image=notused --restart=Never
-
 RC=$?
 
 if [ $RC -ne 0 ]; then
-    echo "Failed to assign permission to the mount volume from external pod for Analytics."
+    echo "Failed to assign permission to the mount volume for Analytics component."
     exit $RC
 else
-      wait_period=0
-      while true
-      do
-            wait_period=$(($wait_period+5))
-            if [ $wait_period -gt 60 ];then
-                  
-                  POD_STATUS_MSG=$(oc get pod perms-pod --output="jsonpath={.status.phase}")
-                  if [ "$POD_STATUS_MSG" == "Succeeded" ]
-                  then
-                        break;
-                  elif [ "$POD_STATUS_MSG" == "Failed" ]
-                  then
-                        echo "Failed to assign permission to the mount volume from external pod for Analytics."
-                        oc delete --ignore-not-found pod perms_pod -n $NAMESPACE
-                        exit 1
-                  fi
-            fi
-      done
+    for i in {1..30}
+    do
+        echo " Setting up permission for Analytics pod to write into the Volume claim ($i/30)..."
+        POD_STATUS_MSG=$(oc get pod perms-pod --output="jsonpath={.status.phase}")
+        
+        if [ "$POD_STATUS_MSG" == "Succeeded" ]; then
+            break;
+        fi
+
+        if [ $i -eq 30 ]; then
+            if [ "$POD_STATUS_MSG" == "Pending" ]; then
+                echo "Failed to assign permission to the mount volume from external pod for Analytics."
+                oc delete --ignore-not-found pod perms_pod -n $NAMESPACE
+                exit 1
+            fi  
+        fi
+
+        if [ "$POD_STATUS_MSG" == "Failed" ]; then
+            echo "Failed to assign permission to the mount volume from external pod for Analytics."
+            oc delete --ignore-not-found pod perms_pod -n $NAMESPACE
+            exit 1
+        fi
+
+        sleep 10
+    done
 fi
