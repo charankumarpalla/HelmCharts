@@ -1,1 +1,0 @@
-This installation can take at least one hour to complete. After the installation begins, you can track the process by going to **Apply logs** in the new workspace or in the Red Hat OpenShift cluster console.
