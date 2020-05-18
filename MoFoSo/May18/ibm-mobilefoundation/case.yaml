@@ -1,0 +1,38 @@
+# USER ACTION REQUIRED: This is a scaffold file intended for the user to modify with their own CASE information
+
+name: ibm-mobilefoundation
+specVersion: 1.0.0
+version: 1.0.2
+appVersion: 3.1.4
+description: "1- IBM MobileFirst Foundation V8.0. Deploys Server, Push, Analytics and AppCenter"
+displayName: "IBM Mobile Foundation"
+displayDescription: "IBM Mobile Foundation Product is available for the customers to install on IBM Cloud"
+icons:
+  - mediaType: text/plain; charset=utf-8
+    url: https://mobilefirstplatform.ibmcloud.com/assets/foundation.svg
+organization: IBM
+webPage: https://www.ibm.com
+supports:
+  architectures:
+    amd64: {}
+  k8sDistros:
+    icp: {}
+    rhocp3: {}
+    rhocp4: {}
+  managedPlatforms:
+    ibm: {}
+classifications:
+  limited: {}
+  opensource: {}
+catalogs:
+  container: {}
+  network: {}
+certifications:
+  ibmccscp: {}
+licenses:
+  license:
+    ref: license
+    mediaType: text/plain
+    metadata:
+      displayName: Cloud Pak for Apps License
+      displayDescription: Cloud Pak for Apps License
