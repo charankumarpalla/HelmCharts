@@ -11,6 +11,19 @@
 # *****************************************************************
 
 DB_TYPE=$1
+
+if [ "${db_host// }" == "" ]
+then
+	echo "Getting the DB2 Servicehost name ..."
+	_GEN_DB_SRV_NAME=$(${CASE_FILES_DIR}/install/mf/get_db_servicehost.sh "db2_primary")
+	_GEN_DB_HADR_SRV_NAME=$(${CASE_FILES_DIR}/install/mf/get_db_servicehost.sh "db2_hadr")
+
+	_GEN_DB_HOSTNAME="${_GEN_DB_SRV_NAME}.${_GEN_DB2_NAMESPACE}.svc"
+	_GEN_DB_HADR_SRV_HOSTNAME="${_GEN_DB_HADR_SRV_NAME}.${_GEN_DB2_NAMESPACE}.svc"
+else
+	_GEN_DB_HOSTNAME=${db_host// }
+fi
+
 DB_HOST=${_GEN_DB_HOSTNAME}
 
 printJobDebugMsg()
@@ -39,7 +52,7 @@ case $SET_DB_TYPE in
   *) 
         echo "Invalid / No input for DB_TYPE. Setting to DB2" ;
         DB_TYPE=DB2;
-        JDBC_URL="jdbc:db2://${db_host}:${db_port}/${db_name}" ;;
+        JDBC_URL="jdbc:db2://${DB_HOST}:${db_port}/${db_name}" ;;
 esac
 
 oc run mfdb --image=${_SYSGEN_DOCKER_REGISTRY}/cp/mfpf-dbinit:${_GEN_IMG_TAG} \

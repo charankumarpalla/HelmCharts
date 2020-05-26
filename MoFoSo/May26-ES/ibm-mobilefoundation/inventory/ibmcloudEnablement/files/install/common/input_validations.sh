@@ -87,7 +87,7 @@ fi
 if [ "${mfpserver_enabled}" == "true" ] || [ "${mfpappcenter_enabled}" == "true" ]
 then
     # embedded DB validations
-    if [ "${db_host}" == "" ]
+    if [ "${db_host// }" == "" ]
     then
         echo "Database Host value (${db_host}) is empty. Validation for setting up the in-built DB2..."
         

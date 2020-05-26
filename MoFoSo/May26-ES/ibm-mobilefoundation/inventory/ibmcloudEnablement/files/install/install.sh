@@ -54,7 +54,7 @@ ${CASE_FILES_DIR}/install/mf/setup_ingress_tls_secret.sh
 
 #  deploy db operator
 if [ "${mfpserver_enabled}" == "true" ] || [ "${mfpappcenter_enabled}" == "true" ]; then
-	if [ "${db_host}" == "" ]; then
+	if [ "${db_host// /}" == "" ]; then
 		${CASE_FILES_DIR}/install/db2/db2_preinstall.sh
 		${CASE_FILES_DIR}/install/common/deploy_operator.sh db2 ${_GEN_DB2_NAMESPACE} db2-image-docker-pull
 

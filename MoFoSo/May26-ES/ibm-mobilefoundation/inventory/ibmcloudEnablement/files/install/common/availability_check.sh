@@ -88,15 +88,15 @@ checkDB2Readiness()
 checkESReadiness()
 {
 	printf "\nCheck Liveliness and Readiness of Elasticsearch client component.\n"
-    ${CASE_FILES_DIR}/install/utils/check_pods_ready.sh ${_GEN_ES_NAMESPACE} helm.sh/chart=ibm-mobilefoundation-prod-${_GEN_ES_IMG_TAG},esnode=client backend
+    ${CASE_FILES_DIR}/install/utils/check_pods_ready.sh ${_GEN_ES_NAMESPACE} helm.sh/chart=ibm-mobilefoundation-prod-${_GEN_IMG_TAG},esnode=client backend
     printReturnMsg $? Elasticsearch-client
 
     printf "\nCheck Liveliness and Readiness of Elasticsearch master component.\n"
-    ${CASE_FILES_DIR}/install/utils/check_pods_ready.sh ${_GEN_ES_NAMESPACE} helm.sh/chart=ibm-mobilefoundation-prod-${_GEN_ES_IMG_TAG},esnode=master backend
+    ${CASE_FILES_DIR}/install/utils/check_pods_ready.sh ${_GEN_ES_NAMESPACE} helm.sh/chart=ibm-mobilefoundation-prod-${_GEN_IMG_TAG},esnode=master backend
     printReturnMsg $? Elasticsearch-master
 
     printf "\nCheck Liveliness and Readiness of Elasticsearch data component.\n"
-    ${CASE_FILES_DIR}/install/utils/check_pods_ready.sh ${_GEN_ES_NAMESPACE} helm.sh/chart=ibm-mobilefoundation-prod-${_GEN_ES_IMG_TAG},esnode=data backend
+    ${CASE_FILES_DIR}/install/utils/check_pods_ready.sh ${_GEN_ES_NAMESPACE} helm.sh/chart=ibm-mobilefoundation-prod-${_GEN_IMG_TAG},esnode=data backend
     printReturnMsg $? Elasticsearch-data
 }
 

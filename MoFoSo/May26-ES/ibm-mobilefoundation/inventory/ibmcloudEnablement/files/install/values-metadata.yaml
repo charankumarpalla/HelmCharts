@@ -94,7 +94,7 @@ db_host:
     description: "Hostname/IP address for Mobile Foundation database. Leave it blank to use the built-in DB2 database."
     type: "string"
     default: ""
-    required: true
+    required: false
 db_port:
   __metadata:
     label: "Database Port"
