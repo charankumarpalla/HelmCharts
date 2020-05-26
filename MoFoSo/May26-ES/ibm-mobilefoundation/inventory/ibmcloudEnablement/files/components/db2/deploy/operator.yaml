@@ -1,0 +1,103 @@
+###############################################################################
+# Licensed Materials - Property of IBM.
+# Copyright IBM Corporation 2019. All Rights Reserved.
+# U.S. Government Users Restricted Rights - Use, duplication or disclosure
+# restricted by GSA ADP Schedule Contract with IBM Corp.
+#
+# Contributors:
+# IBM Corporation - initial API and implementation
+###############################################################################
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: db2-operator
+  labels:
+    app.kubernetes.io/name: db2-operator
+    app.kubernetes.io/instance: db2-instance
+    app.kubernetes.io/managed-by: helm
+    release: db2-operator-_IMG_TAG_
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: db2-operator
+  template:
+    metadata:
+      labels:
+        name: db2-operator
+        app.kubernetes.io/name: db2-operator
+        app.kubernetes.io/instance: db2-instance
+        app.kubernetes.io/managed-by: helm
+        release: db2-operator-_IMG_TAG_
+      annotations:
+        productName: "IBM MobileFirst Platform Foundation DB2"
+        productID: "9380ea99ddde4f5f953cf773ce8e57fc"
+        productVersion: "11.1"
+    spec:
+      hostIPC: true
+      hostNetwork: false
+      hostPID: false
+      serviceAccountName: db2u
+      imagePullSecrets:
+        - name: db2-image-docker-pull
+      containers:
+        - name: db2-operator
+          #image: image-registry.openshift-image-registry.svc:5000/<MFDB_PROJECT>/db2-operator:db2operator # Replace this with the built image name
+          image: _IMG_REPO_/cp/db2-operator:_IMG_TAG_
+          imagePullPolicy: Always
+          env:
+            - name: WATCH_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: OPERATOR_NAME
+              value: db2-operator
+          securityContext:
+            privileged: false
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: false
+            runAsNonRoot: false
+            runAsUser: 1001
+            capabilities:
+              drop:
+              - ALL
+          resources:
+            requests:
+              cpu: 400m
+              memory: 500Mi 
+            limits:
+              cpu: 750m
+              memory: 600Mi
+          livenessProbe:
+            exec:
+              command:
+              - cd 
+              - .
+          readinessProbe:
+            exec:
+              command:
+              - cd
+              - .
+            initialDelaySeconds: 5
+            periodSeconds: 5
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: beta.kubernetes.io/arch
+                operator: In
+                values:
+                - amd64
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 3
+            preference:
+              matchExpressions:
+              - key: beta.kubernetes.io/arch
+                operator: In
+                values:
+                - amd64

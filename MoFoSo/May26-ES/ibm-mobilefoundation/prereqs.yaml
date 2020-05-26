@@ -1,0 +1,71 @@
+
+# USER ACTION REQUIRED: This is a scaffold file intended for the user to modify with their own CASE information
+
+prereqs:
+  prereqDefs:
+    ibmCoreServices: {}
+    k8sDistros:
+      ibmCloud:
+        distribution: ibmCloud
+        semver: '>=1.11.3'
+      ibmCloudPrivate:
+        distribution: ibmCloudPrivate
+        semver: '>=1.11.3'
+      kubernetes:
+        distribution: kubernetes
+        semver: '>=1.11.3'
+      openshift:
+        distribution: openshift
+        semver: '>=1.11.3'
+    k8sResources:
+      ibmRestrictedPSP:
+        apiGroup: policy
+        kind: PodSecurityPolicy
+        name: ibm-restricted-psp
+        selector:
+          matchExpressions: []
+        version: v1beta1
+      ibmRestrictedSCC:
+        apiGroup: security.openshift.io
+        kind: SecurityContextConstraints
+        name: ibm-restricted-scc
+        selector:
+          matchExpressions: []
+        version: v1
+    k8sResourceVersions:
+      customresourcedefinition:
+        apiGroup: apiextensions.k8s.io
+        kind: CustomResourceDefinition
+        version: v1beta1
+      deployment:
+        apiGroup: apps
+        kind: Deployment
+        version: v1
+      mfoperator:
+        apiGroup: mf.ibm.com
+        kind: MFOperator
+        version: v1
+      esoperator:
+        apiGroup: es.ibm.com
+        kind: ESOperator
+        version: v1
+      db2operator:
+        apiGroup: db2.ibm.com
+        kind: DB2Operator
+        version: v1
+      role:
+        apiGroup: rbac.authorization.k8s.io
+        kind: Role
+        version: v1
+      rolebinding:
+        apiGroup: rbac.authorization.k8s.io
+        kind: RoleBinding
+        version: v1
+      securitycontextconstraints:
+        apiGroup: security.openshift.io
+        kind: SecurityContextConstraints
+        version: v1
+      serviceaccount:
+        apiGroup: ""
+        kind: ServiceAccount
+        version: v1

@@ -1,0 +1,44 @@
+resources:
+  metadata:
+    name: ibmcloudEnablement
+  resourceDefs:
+    files:
+      - ref: components/db2/deploy/crds/charts_v1_db2operator_cr.yaml
+      - ref: components/db2/deploy/db2u-sa.yaml
+      - ref: components/db2/deploy/operator.yaml
+      - ref: components/es/deploy/crds/charts_v1_esoperator_cr.yaml
+      - ref: components/es/deploy/service_account.yaml
+      - ref: components/es/deploy/operator.yaml
+      - ref: components/mf/deploy/crds/charts_v1_mfoperator_cr.yaml
+      - ref: components/mf/deploy/service_account.yaml
+      - ref: components/mf/deploy/operator.yaml
+      - ref: preInstall/pre-install.sh
+      - ref: preInstall/README.md
+      - ref: install/install.sh
+      - ref: install/cleanup/db2_cleanup.sh
+      - ref: install/cleanup/es_cleanup.sh
+      - ref: install/cleanup/mf_cleanup.sh
+      - ref: install/cleanup/pre_uninstall.sh
+      - ref: install/common/add_deployment_values.sh
+      - ref: install/common/availability_check.sh
+      - ref: install/common/deploy_cr.sh
+      - ref: install/common/deploy_operator.sh
+      - ref: install/common/generate_consolelogin_secrets.sh
+      - ref: install/common/input_validations.sh
+      - ref: install/common/list_enabled_components.sh
+      - ref: install/common/operators_availability_check.sh
+      - ref: install/common/print_routes.sh
+      - ref: install/common/storage_validation.sh
+      - ref: install/db2/db2_preinstall.sh
+      - ref: install/es/es_preinstall.sh
+      - ref: install/mf/check_for_mf_database.sh
+      - ref: install/mf/generate_db_secrets.sh
+      - ref: install/mf/setup_ingress_tls_secret.sh
+      - ref: install/utils/create_project.sh
+      - ref: install/utils/delete_project.sh
+      - ref: install/utils/functions.sh
+      - ref: install/utils/check_pods_ready.sh
+      - ref: install/utils/check_pods_by_label.sh
+      - ref: install/uninstall.sh
+      - ref: install/README.md
+      - ref: install/values-metadata.yaml
