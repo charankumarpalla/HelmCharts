@@ -41,6 +41,10 @@ check_pod_status() {
         continue
       fi
 
+      if [ "$PHASE" != "Pending" ]; then
+        continue
+      fi
+
       if [[ "$CONDITIONS" != *"Ready=True"* ]]; then
         continue
       fi

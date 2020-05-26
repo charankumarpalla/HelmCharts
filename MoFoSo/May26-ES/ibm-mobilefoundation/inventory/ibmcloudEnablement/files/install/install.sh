@@ -124,8 +124,18 @@ if [ "${mfpserver_enabled}" == "true" ] || [ "${mfpappcenter_enabled}" == "true"
 	if [ $RC -ne 0 ]; then
 		exit $RC
 	else
-		#  Check services availability
+		#  Check pod/services availability
 		${CASE_FILES_DIR}/install/common/availability_check.sh db2
+	fi
+fi
+
+if [ "${mfpserver_enabled}" == "true" ] || [ "${mfpappcenter_enabled}" == "true" ]; then
+	#  check for db reachability/test connection
+	${CASE_FILES_DIR}/install/mf/check_for_mf_database.sh "DB2"
+	RC=$?
+	if [ $RC -ne 0 ]; then
+		echo "Exiting ..."
+		exit $RC
 	fi
 fi
 
