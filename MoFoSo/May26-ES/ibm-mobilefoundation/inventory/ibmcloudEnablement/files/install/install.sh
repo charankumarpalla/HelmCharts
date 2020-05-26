@@ -89,7 +89,7 @@ fi
 
 #  Generate DB secret
 if [ "${mfpserver_enabled}" == "true" ] || [ "${mfpappcenter_enabled}" == "true" ]; then
-	if [ "${db_persistence_storageClassName}" != "" ] || [ "${db_persistence_claimname}" != "" ]; then
+	if [ "${db_host// /}" == "" ]; then
 		${CASE_FILES_DIR}/install/mf/generate_db_secrets.sh db2inst1 db2inst1
 	else
 		${CASE_FILES_DIR}/install/mf/generate_db_secrets.sh ${db_userid} ${db_password}
@@ -115,17 +115,19 @@ if [ "${mfpanalytics_enabled}" == "true" ]; then
 fi
 
 if [ "${mfpserver_enabled}" == "true" ] || [ "${mfpappcenter_enabled}" == "true" ]; then
-	#  Adding deployment values for DB2
-	${CASE_FILES_DIR}/install/common/add_deployment_values.sh db2
+	if [ "${db_host// /}" == "" ]; then
+		#  Adding deployment values for DB2
+		${CASE_FILES_DIR}/install/common/add_deployment_values.sh db2
 
-	# deploy db2 CR
-	${CASE_FILES_DIR}/install/common/deploy_cr.sh db2 ${_GEN_DB2_NAMESPACE}
-	RC=$?
-	if [ $RC -ne 0 ]; then
-		exit $RC
-	else
-		#  Check DB pod/services availability
-		${CASE_FILES_DIR}/install/common/availability_check.sh db2
+		# deploy db2 CR
+		${CASE_FILES_DIR}/install/common/deploy_cr.sh db2 ${_GEN_DB2_NAMESPACE}
+		RC=$?
+		if [ $RC -ne 0 ]; then
+			exit $RC
+		else
+			#  Check DB pod/services availability
+			${CASE_FILES_DIR}/install/common/availability_check.sh db2
+		fi
 	fi
 fi
 

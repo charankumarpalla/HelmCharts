@@ -14,19 +14,6 @@ OPERATOR_NAME=$1
 
 echo "Adding the deployment values to the ${OPERATOR_NAME} CR yaml files ..."
 
-echo "Getting the DB2 Service host name ..."
-if [ "${db_host// }" == "" ]
-then
-	echo "Getting the DB2 Servicehost name ..."
-	_GEN_DB_SRV_NAME=$(${CASE_FILES_DIR}/install/mf/get_db_servicehost.sh "db2_primary")
-	_GEN_DB_HADR_SRV_NAME=$(${CASE_FILES_DIR}/install/mf/get_db_servicehost.sh "db2_hadr")
-
-	_GEN_DB_HOSTNAME="${_GEN_DB_SRV_NAME}.${_GEN_DB2_NAMESPACE}.svc"
-	_GEN_DB_HADR_SRV_HOSTNAME="${_GEN_DB_HADR_SRV_NAME}.${_GEN_DB2_NAMESPACE}.svc"
-else
-	_GEN_DB_HOSTNAME=${db_host// }
-fi
-
 addMFconfig() 
 {
 	#  ingress/route specifics
@@ -262,9 +249,21 @@ fi
 if [ "$OPERATOR_NAME" == "db2" ]
 then
 
-	# Obtain the DB2 Service name for primary
-	DB_SERVICE_HOST_JSON=$(${CASE_FILES_DIR}/install/mf/get_db_servicehost.sh)
-	
+	echo "Getting the DB2 Service host name ..."
+	if [ "${db_host// }" == "" ]
+	then
+		_GEN_DB_SRV_NAME=$(${CASE_FILES_DIR}/install/mf/get_db_servicehost.sh "db2_primary")
+		_GEN_DB_HOSTNAME="${_GEN_DB_SRV_NAME}.${_GEN_DB2_NAMESPACE}.svc"
+		
+		if [ "${db_hadr_enabled}" == "true" ]
+		then
+			_GEN_DB_HADR_SRV_NAME=$(${CASE_FILES_DIR}/install/mf/get_db_servicehost.sh "db2_hadr")
+			_GEN_DB_HADR_SRV_HOSTNAME="${_GEN_DB_HADR_SRV_NAME}.${_GEN_DB2_NAMESPACE}.svc"
+		fi
+	else
+		_GEN_DB_HOSTNAME=${db_host// }
+	fi
+
     addDBconfig
 fi
 
