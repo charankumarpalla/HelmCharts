@@ -14,7 +14,7 @@ OPERATOR_NAME=$1
 DEPLOY_NAMESPACE=$2
 IMG_PULLSECRET=$3
 
-echo "Going to deploy the ${OPERATOR_NAME} operator ..."
+echo "Going to deploy ${OPERATOR_NAME} operator ..."
 
 # Create/Switch Project for ES
 ${CASE_FILES_DIR}/install/utils/create_project.sh ${DEPLOY_NAMESPACE}
@@ -42,6 +42,15 @@ ${CASE_FILES_DIR}/install/utils/create_project.sh ${DEPLOY_NAMESPACE}
 
 oc apply --namespace ${DEPLOY_NAMESPACE} -f ${SA_YAML}
 oc apply --namespace ${DEPLOY_NAMESPACE} -f ${OPERATOR_YAML}
+
+if [ "${OPERATOR_NAME}" == "db2" ]
+then
+    oc adm policy add-scc-to-group db2u-scc system:serviceaccounts:${DEPLOY_NAMESPACE}
+    oc adm policy add-cluster-role-to-user cluster-admin system:serviceaccount:${DEPLOY_NAMESPACE}:db2u
+else
+    oc adm policy add-scc-to-group es-operator system:serviceaccounts:${DEPLOY_NAMESPACE}
+    oc adm policy add-cluster-role-to-user cluster-admin system:serviceaccount:${DEPLOY_NAMESPACE}:${OPERATOR_NAME}-operator
+fi
 
 # give some time...
 sleep 5

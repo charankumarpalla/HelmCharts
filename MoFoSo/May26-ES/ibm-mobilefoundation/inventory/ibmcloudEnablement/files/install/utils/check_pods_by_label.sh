@@ -16,7 +16,7 @@ LABEL_VALUE=$3
 
 check_pod_status() {
   for i in {1..30}; do
-    echo "Checking $LABEL_VALUE pod status ($i/30)..."
+    echo "Checking $LABEL_VALUE-operator pod status ($i/30)..."
     PODS=$(oc get pods -n "$NAMESPACE" -l "$LABEL_QUERY" -o jsonpath='{range .items[*]}{@.metadata.name}{":"}{@.status.phase}{"\n"}{end}')
     if [ $? -ne 0 ]; then
       continue
@@ -47,14 +47,14 @@ wait_for_pod() {
   sleep 5
   PODS=$(oc get pods -n "$NAMESPACE" -l "$LABEL_QUERY" -o jsonpath='{range .items[*]}{@.metadata.name}{":"}{@.status.phase}{"\n"}{end}')
   if [ -z "$PODS" ]; then
-    echo "The $LABEL_VALUE pods are not created. Check logs for details."
+    echo "The $LABEL_VALUE operator pods are not created. Check logs for details."
     exit 1
   else
     if check_pod_status; then
-      echo "All $LABEL_VALUE pods are running."
+      echo "All $LABEL_VALUE operator pods are running."
       exit 0
     else
-      echo "The $LABEL_VALUE pods are not running. There might a problem that is preventing the pods from starting, or they might require additional time to start."
+      echo "The $LABEL_VALUE operator pods are not running. There might a problem that is preventing the pods from starting, or they might require additional time to start."
       echo
       echo "Run the following commands to examine the status of the pods:"
       for POD_ENTRY in $PODS; do
@@ -68,7 +68,7 @@ wait_for_pod() {
     fi
   fi
 
-  echo "Timeout waiting for mf-operator pod to start."
+  echo "Timeout waiting for ${LABEL_VALUE}-operator pod to start."
   exit 1
 }
 

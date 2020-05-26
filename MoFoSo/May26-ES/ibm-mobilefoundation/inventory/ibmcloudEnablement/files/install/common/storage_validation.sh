@@ -19,7 +19,7 @@ checkStorageSettings()
     NAMESPACE=$3
 
     # check if the storage class exists
-    if [ "${persistence_storageClassName}" != "" ]
+    if [ "${persistence_storageClassName// }" != "" ]
     then
         echo "Checking if the storage Class - ${persistence_storageClassName} exists..."
         oc get sc ${persistence_storageClassName} >/dev/null 2>&1
@@ -47,7 +47,7 @@ checkStorageSettings()
     fi
 
     # check the status of pvc 
-    if [ "${persistence_claimname}" != "" ]
+    if [ "${persistence_claimname// }" != "" ]
     then
         echo "Checking if the PVC - ${persistence_claimname} exists..."
         oc get pvc -n ${NAMESPACE} ${persistence_claimname} >/dev/null 2>&1
@@ -72,5 +72,6 @@ then
 fi
 
 if [ "${COMPONENT}" == "es" ]
+then
     checkStorageSettings "${elasticsearch_persistence_storageClassName}" "${elasticsearch_persistence_claimname}" "${_GEN_ES_NAMESPACE}"
 fi

@@ -40,8 +40,5 @@ oc create --namespace ${_GEN_ES_NAMESPACE} -f ${CASE_FILES_DIR}/components/es/de
 # create SCC
 oc create --namespace ${_GEN_ES_NAMESPACE} -f ${CASE_FILES_DIR}/components/es/deploy/scc.yaml
 
-oc adm policy add-scc-to-group es-operator system:serviceaccounts:${_GEN_ES_NAMESPACE}
-oc adm policy add-cluster-role-to-user cluster-admin system:serviceaccount:${_GEN_ES_NAMESPACE}:es-operator
-
 # Create/Switch Project back to MF namespace
 ${CASE_FILES_DIR}/install/utils/create_project.sh ${_SYSGEN_MF_NAMESPACE}

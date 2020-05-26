@@ -35,37 +35,37 @@ checkMFReadiness()
 {
 	if [ "${mfpserver_enabled}" == "true" ]; then
 		printf "\nCheck Liveliness and Readiness of Mobile Foundation Server component.\n"
-		${CASE_FILES_DIR}/install/utils/check_pods_ready.sh ${_SYSGEN_MF_NAMESPACE} helm.sh/chart=ibm-mobilefoundation-prod-8.1.0,component=server ui
+		${CASE_FILES_DIR}/install/utils/check_pods_ready.sh ${_SYSGEN_MF_NAMESPACE} helm.sh/chart=ibm-mobilefoundation-prod-${_GEN_IMG_TAG},component=server ui
 		printReturnMsg $? "Mobile Foundation Server"
 	fi
 
 	if [ "${mfppush_enabled}" == "true" ]; then
 		printf "\nCheck Liveliness and Readiness of Mobile Foundation Push component.\n"
-		${CASE_FILES_DIR}/install/utils/check_pods_ready.sh ${_SYSGEN_MF_NAMESPACE} helm.sh/chart=ibm-mobilefoundation-prod-8.1.0,component=push ui
+		${CASE_FILES_DIR}/install/utils/check_pods_ready.sh ${_SYSGEN_MF_NAMESPACE} helm.sh/chart=ibm-mobilefoundation-prod-${_GEN_IMG_TAG},component=push ui
 		printReturnMsg $? "Mobile Foundation Push"
 	fi
 
 	if [ "${mfpliveupdate_enabled}" == "true" ]; then
 		printf "\nCheck Liveliness and Readiness of Mobile Foundation LiveUpdate component.\n"
-		${CASE_FILES_DIR}/install/utils/check_pods_ready.sh ${_SYSGEN_MF_NAMESPACE} helm.sh/chart=ibm-mobilefoundation-prod-8.1.0,component=liveupdate ui
+		${CASE_FILES_DIR}/install/utils/check_pods_ready.sh ${_SYSGEN_MF_NAMESPACE} helm.sh/chart=ibm-mobilefoundation-prod-${_GEN_IMG_TAG},component=liveupdate ui
 		printReturnMsg $? "Mobile Foundation Liveupdate"
 	fi
 
 	if [ "${_GEN_RECVR_ENABLE}" == "true" ]; then
 		printf "\nCheck Liveliness and Readiness of Mobile Foundation Analytics Receiver component.\n"
-		${CASE_FILES_DIR}/install/utils/check_pods_ready.sh ${_SYSGEN_MF_NAMESPACE} helm.sh/chart=ibm-mobilefoundation-prod-8.1.0,component=analytics-recvr ui
+		${CASE_FILES_DIR}/install/utils/check_pods_ready.sh ${_SYSGEN_MF_NAMESPACE} helm.sh/chart=ibm-mobilefoundation-prod-${_GEN_IMG_TAG},component=analytics-recvr ui
 		printReturnMsg $? "Mobile Foundation Analytics Receiver"
 	fi
 
 	if [ "${mfpanalytics_enabled}" == "true" ]; then
 		printf "\nCheck Liveliness and Readiness of Mobile Foundation Analytics component.\n"
-		${CASE_FILES_DIR}/install/utils/check_pods_ready.sh ${_SYSGEN_MF_NAMESPACE} helm.sh/chart=ibm-mobilefoundation-prod-8.1.0,component=analytics ui
+		${CASE_FILES_DIR}/install/utils/check_pods_ready.sh ${_SYSGEN_MF_NAMESPACE} helm.sh/chart=ibm-mobilefoundation-prod-${_GEN_IMG_TAG},component=analytics ui
 		printReturnMsg $? "Mobile Foundation Analytics Service"
 	fi
 
 	if [ "${mfpappcenter_enabled}" == "true" ]; then
 		printf "\nCheck Liveliness and Readiness of Mobile Foundation Application Center component.\n"
-		${CASE_FILES_DIR}/install/utils/check_pods_ready.sh ${_SYSGEN_MF_NAMESPACE} helm.sh/chart=ibm-mobilefoundation-prod-8.1.0,component=appcenter ui
+		${CASE_FILES_DIR}/install/utils/check_pods_ready.sh ${_SYSGEN_MF_NAMESPACE} helm.sh/chart=ibm-mobilefoundation-prod-${_GEN_IMG_TAG},component=appcenter ui
 		printReturnMsg $? appcenter
 	fi
 }
