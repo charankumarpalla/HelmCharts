@@ -42,7 +42,7 @@ spec:
         - name: _IMG_PULLSECRET_
       containers:
         - name: mf-operator
-          image: _IMG_REPO_/mf-operator:_IMG_TAG_ # Replace this with the built image name
+          image: _IMG_REPO_/cp/mf-operator:_IMG_TAG_ # Replace this with the built image name
           imagePullPolicy: _IMG_PULLPOLICY_
           env:
             - name: WATCH_NAMESPACE

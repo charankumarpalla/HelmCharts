@@ -15,8 +15,8 @@ COMPONENT=$1
 checkStorageSettings()
 {
     persistence_storageClassName=$1
-    persistence_claimname $2
-    NAMESPACE $3
+    persistence_claimname=$2
+    NAMESPACE=$3
 
     # check if the storage class exists
     if [ "${persistence_storageClassName}" != "" ]

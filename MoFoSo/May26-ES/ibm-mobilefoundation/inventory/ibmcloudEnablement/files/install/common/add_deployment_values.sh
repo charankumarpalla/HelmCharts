@@ -235,8 +235,10 @@ else
 	_GEN_ANALYTICS_ES_NAMESPACE="${_GEN_ES_NAMESPACE}"
 fi
 
+
+
 # replace image repo and tag value
-sed -i "s|_IMG_REPO_|${_GEN_IMG_REPO}|g" ${CR_YAML}
+sed -i "s|_IMG_REPO_|${_SYSGEN_DOCKER_REGISTRY}|g" ${CR_YAML}
 sed -i "s|_IMG_TAG_|${_GEN_IMG_TAG}|g" ${CR_YAML}
 
 if [ "$OPERATOR_NAME" == "es" ]

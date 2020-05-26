@@ -32,6 +32,7 @@ fi
 # Create Operator & service account
 sed -i "s|_IMG_REPO_|${_SYSGEN_DOCKER_REGISTRY}|g" ${OPERATOR_YAML}
 sed -i "s|_IMG_TAG_|${_GEN_IMG_TAG}|g" ${OPERATOR_YAML}
+sed -i "s|_IMG_PULLPOLICY_|${image_pullPolicy}|g" ${OPERATOR_YAML}
 sed -i "s|_IMG_PULLSECRET_|${IMG_PULLSECRET}|g" ${OPERATOR_YAML}
 sed -i "s|_IMG_TAG_|${_GEN_IMG_TAG}|g" ${SA_YAML}
 sed -i "s|_IMG_PULLSECRET_|${IMG_PULLSECRET}|g" ${SA_YAML}
