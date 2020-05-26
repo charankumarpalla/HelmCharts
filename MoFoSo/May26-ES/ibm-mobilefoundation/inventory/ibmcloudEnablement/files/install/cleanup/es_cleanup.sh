@@ -33,3 +33,8 @@ oc delete --namespace ${_GEN_ES_NAMESPACE} -f ${CASE_FILES_DIR}/components/es/de
 
 # delete CRD
 oc delete --namespace ${_GEN_ES_NAMESPACE} -f ${CASE_FILES_DIR}/components/es/deploy/crds/charts_v1_esoperator_crd.yaml
+
+# patch es to delete
+oc patch esoperator.es.ibm.com ${_GEN_ES_NAMESPACE} -p '{"metadata":{"finalizers":[]}}' --type=merge"
+
+echo "Uninstall of ES completed."

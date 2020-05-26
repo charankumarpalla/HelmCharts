@@ -84,18 +84,20 @@ then
 	exit 1
 fi
 
-# embedded DB validations
-if [ "${db_host}" == "db2-primary-ibm-db2u-db2u-engn-svc.mf-db2" ]
+if [ "${mfpserver_enabled}" == "true" ] || [ "${mfpappcenter_enabled}" == "true" ]
 then
-    if [ "${db_persistence_storageClassName}" == "" ] && [ "${db_persistence_claimname}" == "" ]
+    # embedded DB validations
+    if [ "${db_host}" == "" ]
     then
-        printf "\nWhile using DB2, either StorageClass Name or existing PVC has to be set."
-        printf "\nExiting ...\n\n"
-	    exit 1
-    fi
+        echo "Database Host value (${db_host}) is empty. Validation for setting up the in-built DB2..."
+        
+        if [ "${db_persistence_storageClassName}" == "" ] && [ "${db_persistence_claimname}" == "" ]
+        then
+            printf "\nWhile using DB2, either StorageClass name or existing PVC must be set."
+            printf "\nExiting ...\n\n"
+            exit 1
+        fi
 
-    if [ "${mfpserver_enabled}" == "true" ] || [ "${mfpappcenter_enabled}" == "true" ]
-    then
         ${CASE_FILES_DIR}/install/common/storage_validation.sh db2
         if [ $? -ne 0 ]; then
             printf "\nDB persistence setting validation failed. Exiting ...\n"

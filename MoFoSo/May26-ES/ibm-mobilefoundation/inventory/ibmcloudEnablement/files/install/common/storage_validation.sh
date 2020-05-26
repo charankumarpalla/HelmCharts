@@ -28,6 +28,22 @@ checkStorageSettings()
             echo "Invalid StorageClass name (${persistence_storageClassName}) for the deployment value - ${COMPONENT}_persistence_storageClassName. Exiting ..."
             exit $RC
         fi
+
+        STORAGE_PROVISIONER=$(oc get sc ${persistence_storageClassName} -o json | jq .provisioner  | sed "s/\"//g")
+
+        if [[ ${STORAGE_PROVISIONER} == *"block"* ]]; then
+            echo "${persistence_storageClassName} storage Class is a \"block storage\"."
+            echo "DB2 needs file storage only. Please use any file storage based Storageclass."
+            echo "Exiting ..."
+            exit 2
+        fi
+
+        if [[ ${persistence_storageClassName} == *"block"* ]]; then
+            echo "${persistence_storageClassName} storage Class is a \"block storage\"."
+            echo "DB2 needs file storage only. Please use any file storage based Storageclass."
+            echo "Exiting ..."
+            exit 2
+        fi
     fi
 
     # check the status of pvc 

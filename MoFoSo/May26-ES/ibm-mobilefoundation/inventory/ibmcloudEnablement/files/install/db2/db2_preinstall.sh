@@ -42,9 +42,13 @@ oc create --namespace ${_GEN_DB2_NAMESPACE} -f ${CASE_FILES_DIR}/components/db2/
 oc adm policy add-scc-to-group db2u-scc system:serviceaccounts:${_GEN_DB2_NAMESPACE}
 oc adm policy add-cluster-role-to-user cluster-admin system:serviceaccount:${_GEN_DB2_NAMESPACE}:db2u
 
+# Create/Switch Project for DB2
+${CASE_FILES_DIR}/install/utils/create_project.sh ${_GEN_DB2_NAMESPACE}
+
 # For using storage class for data persistance
 if [ "${db2_storageClassName}" != "" ]
 then
+    echo " Setting permission for the storage class ..."
     oc get no -l node-role.kubernetes.io/worker --no-headers -o name | xargs -I {} --  oc debug {} -- chroot /host sh -c 'grep "^Domain = slnfsv4.coms" /etc/idmapd.conf || ( sed -i "s/.*Domain =.*/Domain = slnfsv4.com/g" /etc/idmapd.conf; nfsidmap -c; rpc.idmapd )'
 fi
 

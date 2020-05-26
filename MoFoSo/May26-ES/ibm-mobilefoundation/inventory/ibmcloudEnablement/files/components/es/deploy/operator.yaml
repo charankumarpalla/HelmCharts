@@ -39,7 +39,7 @@ spec:
       hostPID: false
       serviceAccountName: es-operator
       imagePullSecrets:
-        - name: _GEN_IMG_PULLSECRET
+        - name: _GEN_MF_PULLSECRET
       containers:
         - name: es-operator
           image: _IMG_REPO_/cp/es-operator:_IMG_TAG_ # Replace this with the built image name

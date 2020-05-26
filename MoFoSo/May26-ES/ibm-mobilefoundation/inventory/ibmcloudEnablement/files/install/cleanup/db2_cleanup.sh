@@ -32,3 +32,9 @@ oc delete --namespace ${_GEN_DB2_NAMESPACE} -f ${CASE_FILES_DIR}/components/db2/
 
 # delete CRD
 oc delete --namespace ${_GEN_DB2_NAMESPACE} -f ${CASE_FILES_DIR}/components/db2/deploy/crds/charts_v1_db2operator_crd.yaml
+
+# patching db2 deployment
+oc patch db2/db2-primary -p '{"metadata":{"finalizers":[]}}' --type=merge 
+
+echo "Uninstall of DB2 completed."
+

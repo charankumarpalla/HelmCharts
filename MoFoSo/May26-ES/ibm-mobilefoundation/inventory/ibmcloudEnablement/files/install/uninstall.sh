@@ -16,8 +16,8 @@ export _GEN_IMG_TAG=8.1.0
 export CASE_FILES_DIR=./ibm-mobilefoundation/inventory/ibmcloudEnablement/files
 
 export _SYSGEN_MF_NAMESPACE=${JOB_NAMESPACE}
-export _GEN_DB2_NAMESPACE=mf-db2
-export _GEN_ES_NAMESPACE=mf-elasticsearch
+export _GEN_DB2_NAMESPACE=${db_namespace:-mfdb}
+export _GEN_ES_NAMESPACE=${elasticsearch_namespace:-mfes}
 
 # Create/Switch Project for ES
 ${CASE_FILES_DIR}/install/utils/create_project.sh ${_SYSGEN_MF_NAMESPACE}

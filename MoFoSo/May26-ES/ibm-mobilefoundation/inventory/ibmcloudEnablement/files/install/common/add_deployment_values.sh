@@ -14,8 +14,21 @@ OPERATOR_NAME=$1
 
 echo "Adding the deployment values to the ${OPERATOR_NAME} CR yaml files ..."
 
-addconfigMF() {
-	
+echo "Getting the DB2 Service host name ..."
+if [ "${db_host}" == "" ]
+then
+	echo "Getting the DB2 Servicehost name ..."
+	_GEN_DB_SRV_NAME=$(${CASE_FILES_DIR}/install/mf/get_db_servicehost.sh "db2_primary")
+	_GEN_DB_HADR_SRV_NAME=$(${CASE_FILES_DIR}/install/mf/get_db_servicehost.sh "db2_hadr")
+
+	_GEN_DB_HOSTNAME="${_GEN_DB_SRV_NAME}.${_GEN_DB_NAMESPACE}.svc"
+	_GEN_DB_HADR_SRV_HOSTNAME="${_GEN_DB_HADR_SRV_NAME}.${_GEN_DB_NAMESPACE}.svc"
+else
+	_GEN_DB_HOSTNAME=${db_host}
+fi
+
+addMFconfig() 
+{
 	#  ingress/route specifics
 	sed -i "s|_IMG_PULLPOLICY_|${image_pullPolicy}|g" ${CR_YAML}
 	sed -i "s|_IMG_PULLSECRET_|mf-image-docker-pull|g" ${CR_YAML}
@@ -26,7 +39,7 @@ addconfigMF() {
 
 	# DB placeholder substitution tasks
 	sed -i "s|_DB_TYPE_|${db_type}|g" ${CR_YAML}
-	sed -i "s|_MFPF_DB_HOST_|${db_host}|g" ${CR_YAML}
+	sed -i "s|_MFPF_DB_HOST_|${_GEN_DB_HOSTNAME}|g" ${CR_YAML}
 	sed -i "s|_MFPF_DB_PORT_|${db_port}|g" ${CR_YAML}
 	sed -i "s|_MFPF_DB_NAME_|${db_name}|g" ${CR_YAML}
 	sed -i "s|_MFPF_DB_SECRET_|mobilefoundation-db-secret|g" ${CR_YAML}
@@ -174,6 +187,7 @@ addESconfig()
 
 addDBconfig()
 {
+
 	if [ "${db_persistence_storageClassName}" == "" ]
 	then
 		_GEN_DB2_USE_DYNAPRO=false
@@ -204,7 +218,8 @@ fi
 #  disable the analytics receiver to prevent from unnecessary deployment
 #  of the receiver component
 #
-if [ "${mfpanalytics_recvr_enabled}" == "true" ] && [ "${mfpanalytics_enabled}" == "false" ]; then
+if [ "${mfpanalytics_recvr_enabled}" == "true" ] && [ "${mfpanalytics_enabled}" == "false" ]
+then
 	echo "\nINFO : Analytics receiver was enabled without analytics component. Hence disabling analytics receiver component.\n"
 	_GEN_RECVR_ENABLE=false
 else
@@ -235,8 +250,6 @@ else
 	_GEN_ANALYTICS_ES_NAMESPACE="${_GEN_ES_NAMESPACE}"
 fi
 
-
-
 # replace image repo and tag value
 sed -i "s|_IMG_REPO_|${_SYSGEN_DOCKER_REGISTRY}|g" ${CR_YAML}
 sed -i "s|_IMG_TAG_|${_GEN_IMG_TAG}|g" ${CR_YAML}
@@ -248,6 +261,10 @@ fi
 
 if [ "$OPERATOR_NAME" == "db2" ]
 then
+
+	# Obtain the DB2 Service name for primary
+	DB_SERVICE_HOST_JSON=$(${CASE_FILES_DIR}/install/mf/get_db_servicehost.sh)
+	
     addDBconfig
 fi
 

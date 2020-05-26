@@ -67,6 +67,13 @@ image_pullSecret:
 ###############################################################################
 ## Database configuration
 ###############################################################################
+db_namespace:
+  __metadata:
+    label: "Database Namespace"
+    description: "Specify the namespace to be created/used to deploy DB2, . Default is mfdb."
+    type: "string"
+    default: "mfdb"
+    required: false
 db_type:
   __metadata:
     label: " Database type"
@@ -84,9 +91,9 @@ db_type:
 db_host:
   __metadata:
     label: "Database hostname"
-    description: "Hostname/IP address for Mobile Foundation database. Default setting is service hostname of DB2."
+    description: "Hostname/IP address for Mobile Foundation database. Leave it blank to use the built-in DB2 database."
     type: "string"
-    default: "db2-primary-ibm-db2u-db2u-engn-svc.mf-db2"
+    default: ""
     required: true
 db_port:
   __metadata:
@@ -138,8 +145,8 @@ db_adminCredentialsSecret:
     required: false
 db_persistence_storageClassName:
   __metadata:
-    label: "Existing storage class name"
-    description: "Specify a specific storage class name for the Database."
+    label: "Existing file storage class name"
+    description: "Specify a specific storage class name for the Database. e.g. ibmc-file-retain-gold"
     type: "string"
     required: false
 db_persistence_claimname:
@@ -148,6 +155,13 @@ db_persistence_claimname:
     description: "Specify an existing volume claim here (PVC) for the Database."
     type: "string"
     required: false
+db_hadr_enabled:
+  __metadata:
+    label: "Enable HADR for database"
+    description: "Specify whether to enable HADR to the Database. (Not applicable for remote DB host)"
+    type: "boolean"
+    required: false
+    default: false
 ###############################################################################
 ## Database initialization configuration
 ###############################################################################
@@ -361,7 +375,7 @@ mfppush_enabled:
     label: "Enable Mobile Foundation Push"
     description: "Specify whether to enable Mobile Foundation Push."
     type: "boolean"
-    required: false
+    required: true
     default: true
 mfppush_replicas:
   __metadata:
@@ -464,8 +478,8 @@ mfpliveupdate_enabled:
     label: "Enable Mobile Foundation Liveupdate"
     description: "Specify whether to enable Mobile Foundation Liveupdate."
     type: "boolean"
-    required: false
-    default: false
+    required: true
+    default: true
 mfpliveupdate_replicas:
   __metadata:
     label: "Replica Count"
@@ -566,8 +580,8 @@ mfpanalytics_enabled:
     label: "Enable Analytics"
     description: "Specify whether to enable Mobile Foundation Analytics."
     type: "boolean"
-    required: false
-    default: false
+    required: true
+    default: true
 mfpanalytics_consoleUserid:
   __metadata:
     label: "Console Login Userid"
@@ -683,8 +697,8 @@ mfpanalytics_recvr_enabled:
     label: "Enable Analytics Receiver"
     description: "Specify whether to enable Mobile Foundation Analytics Receiver."
     type: "boolean"
-    required: false
-    default: false
+    required: true
+    default: true
 mfpanalytics_recvr_replicas:
   __metadata:
     label: "Replica Count"
@@ -793,7 +807,7 @@ mfpappcenter_enabled:
     description: "Specify whether to enable Application Center."
     type: "boolean"
     default: false
-    required: false
+    required: true
 mfpappcenter_consoleUserid:
   __metadata:
     label: "Console Login Userid"
@@ -904,6 +918,13 @@ mfpappcenter_resources_limits_memory:
 ###############################################################################
 ## Elasticsearch Configuration
 ###############################################################################
+elasticsearch_namespace:
+  __metadata:
+    label: "Elasticsearch Namespace"
+    description: "Specify the namespace to be created/used to deploy Elasticsearch. Default is mfes"
+    type: "string"
+    default: "mfes"
+    required: true
 elasticsearch_master_replicas:
   __metadata:
     label: "Replica Count"

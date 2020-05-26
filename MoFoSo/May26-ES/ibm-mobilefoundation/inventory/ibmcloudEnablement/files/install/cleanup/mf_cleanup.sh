@@ -228,3 +228,8 @@ spec:
         metadata:
           type: object
 EOF
+
+# patch mf to delete
+oc patch mfoperator.mf.ibm.com ${_GEN_DB_NAMESPACE} -p '{"metadata":{"finalizers":[]}}' --type=merge"
+
+echo "Uninstall of MF completed."

@@ -4,11 +4,19 @@ resources:
   resourceDefs:
     files:
       - ref: components/db2/deploy/crds/charts_v1_db2operator_cr.yaml
+      - ref: components/db2/deploy/crds/charts_v1_db2operator_crd.yaml
       - ref: components/db2/deploy/db2u-sa.yaml
+      - ref: components/db2/deploy/db2u-scc.yaml
+      - ref: components/db2/deploy/db2u-role.yaml
+      - ref: components/db2/deploy/db2u-rolebinding.yaml
       - ref: components/db2/deploy/operator.yaml
       - ref: components/es/deploy/crds/charts_v1_esoperator_cr.yaml
+      - ref: components/es/deploy/crds/charts_v1_esoperator_crd.yaml
       - ref: components/es/deploy/service_account.yaml
       - ref: components/es/deploy/operator.yaml
+      - ref: components/es/deploy/role.yaml
+      - ref: components/es/deploy/role_binding.yaml
+      - ref: components/es/deploy/scc.yaml
       - ref: components/mf/deploy/crds/charts_v1_mfoperator_cr.yaml
       - ref: components/mf/deploy/service_account.yaml
       - ref: components/mf/deploy/operator.yaml
@@ -34,6 +42,7 @@ resources:
       - ref: install/mf/check_for_mf_database.sh
       - ref: install/mf/generate_db_secrets.sh
       - ref: install/mf/setup_ingress_tls_secret.sh
+      - ref: install/mf/get_db_servicehost.sh
       - ref: install/utils/create_project.sh
       - ref: install/utils/delete_project.sh
       - ref: install/utils/functions.sh

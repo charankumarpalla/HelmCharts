@@ -10,12 +10,12 @@
 #
 # *****************************************************************
 
-echo "Setup Ingress secret name ..."
+echo "Setup Ingress secret ..."
 
 if [ "${ingress_secret}" == "" ]
 then 
     echo "Copying Ingress TLS secret name to the the MF namespace (${_SYSGEN_MF_NAMESPACE}) ..."
-    oc get secret ${INGRESS_TLS_NAME} --namespace=${TLS_SRC_NS} --export -o yaml | oc apply --namespace=${_SYSGEN_MF_NAMESPACE} -f -
+    oc get secret ${INGRESS_SECRET_NAME} --namespace=${TLS_SRC_NS} --export -o yaml | oc apply --namespace=${_SYSGEN_MF_NAMESPACE} -f -
 else
     echo "Using the custom ingress tls secret name : ${ingress_secret} "
     oc get secret ${ingress_secret} -n ${TLS_SRC_NS} >/dev/null 2>&1
@@ -23,7 +23,7 @@ else
 
     if [ $TLS_SECRET_EXISTS -ne 0 ]
     then
-        echo "Ingress TLS secret name ($ingress_secret) doesn't exists. Proceeding without ingress secret name ..."
+        echo "Ingress TLS secret name (${ingress_secret}) doesn't exists. Proceeding without ingress secret name ..."
     fi
 fi
 

@@ -11,6 +11,7 @@
 # *****************************************************************
 
 DB_TYPE=$1
+DB_HOST=${_GEN_DB_HOSTNAME}
 
 printJobDebugMsg()
 {
@@ -28,7 +29,7 @@ SET_DB_TYPE=$(echo $DB_TYPE| tr '[:lower:]' '[:upper:]')
 case $SET_DB_TYPE in
   "DB2") 
         echo "DB_TYPE is DB2" ;
-        JDBC_URL="jdbc:db2://${db_host}:${db_port}/${db_name}" ;;
+        JDBC_URL="jdbc:db2://${DB_HOST}:${db_port}/${db_name}" ;;
   "ORACLE") 
         echo "DB_TYPE is Oracle";
         echo "Oracle DB is not supported via icpa-installer" ;;

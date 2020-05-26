@@ -16,8 +16,8 @@ export CASE_FILES_DIR="./ibm-mobilefoundation/inventory/ibmcloudEnablement/files
 
 #  Following are to be used from the builtin ENV variables
 export _SYSGEN_MF_NAMESPACE=${JOB_NAMESPACE}
-export _GEN_DB2_NAMESPACE=mf-db2
-export _GEN_ES_NAMESPACE=mf-elasticsearch
+export _GEN_DB2_NAMESPACE=${db_namespace:-mfdb}
+export _GEN_ES_NAMESPACE=${elasticsearch_namespace:-mfes}
 
 # export _SYSGEN_DOCKER_REGISTRY=${DOCKER_REGISTRY}
 # export _SYSGEN_DOCKER_REGISTRY="cp.icr.io"
@@ -32,7 +32,7 @@ export _SYSGEN_DOCKER_REGISTRY_PASSWORD="lmTwt2gWsxJk25XAFATqGqkdWxWWOdsSfJhYL7G
 export _GEN_IMG_TAG=8.1.0
 
 #  Set image pull secret name
-_GEN_IMG_PULLSECRET=mf-image-docker-pull
+_GEN_MF_PULLSECRET=mf-image-docker-pull
 
 #  list all the components enabled
 ${CASE_FILES_DIR}/install/common/list_enabled_components.sh
@@ -46,15 +46,15 @@ fi
 
 #  create pull secret
 echo "Creating image pull secret for Mobile Foundation..."
-oc create secret docker-registry ${_GEN_IMG_PULLSECRET} -n ${_SYSGEN_MF_NAMESPACE} --docker-server=${_SYSGEN_DOCKER_REGISTRY} --docker-username=${_SYSGEN_DOCKER_REGISTRY_USER} --docker-password=${_SYSGEN_DOCKER_REGISTRY_PASSWORD}
-oc secrets -n ${_SYSGEN_MF_NAMESPACE} link default ${_GEN_IMG_PULLSECRET} --for=pull
+oc create secret docker-registry ${_GEN_MF_PULLSECRET} -n ${_SYSGEN_MF_NAMESPACE} --docker-server=${_SYSGEN_DOCKER_REGISTRY} --docker-username=${_SYSGEN_DOCKER_REGISTRY_USER} --docker-password=${_SYSGEN_DOCKER_REGISTRY_PASSWORD}
+oc secrets -n ${_SYSGEN_MF_NAMESPACE} link default ${_GEN_MF_PULLSECRET} --for=pull
 
 # Setup TLS secret
 ${CASE_FILES_DIR}/install/mf/setup_ingress_tls_secret.sh
 
 #  deploy db operator
 if [ "${mfpserver_enabled}" == "true" ] || [ "${mfpappcenter_enabled}" == "true" ]; then
-	if [ "${db_persistence_storageClassName}" != "" ] || [ "${db_persistence_claimname}" != "" ]; then
+	if [ "${db_host}" == "" ]; then
 		${CASE_FILES_DIR}/install/db2/db2_preinstall.sh
 		${CASE_FILES_DIR}/install/common/deploy_operator.sh db2 ${_GEN_DB2_NAMESPACE} db2-image-docker-pull
 
@@ -109,13 +109,13 @@ if [ "${mfpanalytics_enabled}" == "true" ]; then
 	if [ $RC -ne 0 ]; then
 		exit $RC
 	else
-		#  Check ES services availability
+		#  Check ES pod/services availability
 		${CASE_FILES_DIR}/install/common/availability_check.sh es
 	fi
 fi
 
 if [ "${mfpserver_enabled}" == "true" ] || [ "${mfpappcenter_enabled}" == "true" ]; then
-	#  Adding deployment values for ES
+	#  Adding deployment values for DB2
 	${CASE_FILES_DIR}/install/common/add_deployment_values.sh db2
 
 	# deploy db2 CR
@@ -124,11 +124,12 @@ if [ "${mfpserver_enabled}" == "true" ] || [ "${mfpappcenter_enabled}" == "true"
 	if [ $RC -ne 0 ]; then
 		exit $RC
 	else
-		#  Check pod/services availability
+		#  Check DB pod/services availability
 		${CASE_FILES_DIR}/install/common/availability_check.sh db2
 	fi
 fi
 
+# Test DB Connection
 if [ "${mfpserver_enabled}" == "true" ] || [ "${mfpappcenter_enabled}" == "true" ]; then
 	#  check for db reachability/test connection
 	${CASE_FILES_DIR}/install/mf/check_for_mf_database.sh "DB2"
