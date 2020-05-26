@@ -3,7 +3,7 @@
 export _GEN_IMG_TAG=8.1.0
 
 # create CRD
-cat << EOF | oc apply --namespace ${JOB_NAMESPACE} -f -
+cat << EOF | oc create --namespace ${JOB_NAMESPACE} -f -
 ---
 apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
@@ -43,7 +43,7 @@ spec:
 EOF
 
 # create role
-cat << EOF | oc apply --namespace ${JOB_NAMESPACE} -f -
+cat << EOF | oc create --namespace ${JOB_NAMESPACE} -f -
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
@@ -143,7 +143,7 @@ rules:
 EOF
 
 # create role-binding
-cat << EOF | oc apply --namespace ${JOB_NAMESPACE} -f -
+cat << EOF | oc create --namespace ${JOB_NAMESPACE} -f -
 ---
 kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
@@ -165,7 +165,7 @@ roleRef:
 EOF
 
 # create SCC
-cat << EOF | oc apply --namespace ${JOB_NAMESPACE} -f -
+cat << EOF | oc create --namespace ${JOB_NAMESPACE} -f -
 ---
 apiVersion: security.openshift.io/v1
 kind: SecurityContextConstraints
@@ -213,7 +213,3 @@ volumes:
 - secret
 priority: 0
 EOF
-
-oc adm policy add-scc-to-group mf-operator system:serviceaccounts:${JOB_NAMESPACE}
-oc adm policy add-cluster-role-to-user cluster-admin system:serviceaccount:${JOB_NAMESPACE}:mf-operator
-
