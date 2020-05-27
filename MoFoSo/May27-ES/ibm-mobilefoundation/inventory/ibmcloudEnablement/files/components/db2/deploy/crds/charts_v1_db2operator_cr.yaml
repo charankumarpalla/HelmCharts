@@ -1,0 +1,306 @@
+apiVersion: db2.ibm.com/v1
+kind: DB2Operator
+metadata:
+  name: db2-primary
+  labels:
+    app.kubernetes.io/name: db2-operator
+    app.kubernetes.io/instance: db2-instance
+    app.kubernetes.io/managed-by: helm
+    release: db2-operator-_IMG_TAG_
+spec:
+  ###############################################################################
+  # Licensed Materials - Property of IBM.
+  # Copyright IBM Corporation 2019. All Rights Reserved.
+  # U.S. Government Users Restricted Rights - Use, duplication or disclosure
+  # restricted by GSA ADP Schedule Contract with IBM Corp.
+  #
+  # Contributors:
+  # IBM Corporation - initial API and implementation
+  ###############################################################################
+
+  ###############################################################################
+  # Default values for MFOperator
+  # This is a YAML-formatted file.
+  # Declare variables to be passed into your templates.
+  ###############################################################################
+
+  ###############################################################################
+  # Specify architecture (amd64, ppc64le, s390x) and weight to be  used for scheduling as follows :
+  #   0 - Do not use
+  #   1 - Least preferred
+  #   2 - No preference
+  #   3 - Most preferred
+  # Note: IBM Mobile Foundation Package for Openshift currently supports only amd64 architecture.
+  ###############################################################################
+
+  ###############################################################################
+  ## Global configuration
+  ###############################################################################
+  arch: x86_64
+  baseNamespace: default
+  database:
+    bluadminPwd: ''
+    codeset: UTF-8
+    collation: IDENTITY
+    create: true
+    encrypt: 'YES'
+    name: BLUDB
+    pageSize: '32768'
+    tableOrg: COLUMN
+    territory: US
+  dedicated: true
+  development: false
+  fcm:
+    hostnetwork:
+      enabled: false
+    ips: ''
+  global:
+    dbType: db2oltp
+    serviceAccount: db2u
+  haRecovery: partial
+  hadr:
+    enabled: true
+    initRole: STANDARD
+    peerWindow: '120'
+    primaryPort: '60006'
+    remoteHost: 'NULL'
+    #remoteHost: 'db2-primary-ibm-db2u-db2u-hadr-headless-svc'
+    remoteInstanceUser: db2inst1
+    scope: Namespace
+    standbyPort: '60007'
+    syncMode: NEARSYNC
+    targetList: 'NULL'
+    timeOut: '120'
+  ibm-unified-console:
+    configMapName: ''
+    dataServer:
+      ldap:
+        rootPwdSecretName: ''
+      metadb:
+        pwdSecretName: ''
+      sharedPVC:
+        name: null
+        subPath:
+          config: uc_config
+          downloads: downloads
+          userHome: home
+    disableHostCheck: 'true'
+    image:
+      arch: ''
+      pullPolicy: IfNotPresent
+      repository: unified-console
+      tag: icp4d-db2u
+    product: PLATFORM_ICP4D_WH
+    resources:
+      limits:
+        cpu: 2
+        memory: 4Gi
+      requests:
+        cpu: 1
+        memory: 2Gi
+    runtime: ICP4Data
+    serviceName: ''
+    useConfigMap: 'true'
+  images:
+    auth:
+      image:
+        repository: docker.io/ibmcom/db2u.auxiliary.auth
+        tag: 11.5.1.0-CN1
+      replicas: 1
+    db2u:
+      image:
+        repository: docker.io/ibmcom/db2
+        tag: 11.5.1.0-CN1
+      replicas: 1
+    etcd:
+      image:
+        repository: quay.io/coreos/etcd
+        tag: v3.3.10
+      storage:
+        persisted: true
+      volume:
+        name: etcd-stor
+        size: 1Gi
+        storageClassName: ""
+        useDynamicProvisioning: false
+    instdb:
+      image:
+        repository: docker.io/ibmcom/db2u.instdb
+        tag: 11.5.1.0-CN1
+      replicas: 1
+    pullPolicy: Always
+    tools:
+      image:
+        repository: docker.io/ibmcom/db2u.tools
+        tag: 11.5.1.0-CN1
+      replicas: 1
+    universalTag: latest
+  instance:
+    db2CompatibilityVector: 'NULL'
+    db2FencedUser: db2fenc1
+    db2InstanceGroup: db2iadm1
+    db2InstanceMemPercent: '80'
+    db2InstancePwd: ''
+    db2InstanceUser: db2inst1
+    db2Support4K: false
+    db2Workload: ''
+  ldap:
+    enabled: true
+    ldap_admin: ''
+    ldap_admin_group: ''
+    ldap_domain: ''
+    ldap_server: 'db2-primary-ibm-db2u-db2u-ldap'
+    ldap_user_group: ''
+  limit:
+    cpu: 2
+    memory: 4Gi
+  mln:
+    distribution: 0:0
+    total: 1
+  nodes: ''
+  runtime: ICP
+  servicename: 'db2-primary-ibm-db2u'
+  setKernelParams: true
+  storage:
+    enableVolumeClaimTemplates: false
+    catalogStor:
+      size: 250Gi
+    dataStor:
+      size: 40Gi
+    existingClaimName: '_DB2_EXISTING_CLAIMNAME_'
+    persisted: true
+    sqllibSharedStor:
+      size: 2Gi
+    storageClassName: '_DB2_STORAGECLASS_NAME_'
+    storageLocation:
+      backupStorage:
+        enablePodLevelClaim: false
+        enabled: false
+        hostPath:
+          path: ''
+          type: Directory
+        pvc:
+          claim:
+            size: 20Gi
+            storageClassName: ''
+            useDynamicProvisioning: false
+          existingClaim:
+            name: ''
+        volumeName: backupvol
+        volumeType: ''
+      dataStorage:
+        enablePodLevelClaim: false
+        enabled: false
+        hostPath:
+          path: ''
+          type: Directory
+        pvc:
+          claim:
+            size: 40Gi
+            storageClassName: ''
+            useDynamicProvisioning: false
+          existingClaim:
+            name: ''
+        volumeName: datavol
+        volumeType: ''
+      growthStorage:
+        enablePodLevelClaim: false
+        enabled: false
+        hostPath:
+          path: ''
+          type: Directory
+        pvc:
+          claim:
+            size: 40Gi
+            storageClassName: ''
+            useDynamicProvisioning: false
+          existingClaim:
+            name: ''
+        volumeName: growthvol
+        volumeType: ''
+      metaStorage:
+        enabled: false
+        hostPath:
+          path: ''
+          type: Directory
+        pvc:
+          claim:
+            size: 40Gi
+            storageClassName: ''
+            useDynamicProvisioning: false
+          existingClaim:
+            name: ''
+        volumeName: metavol
+        volumeType: ''
+      tieredStorage:
+        cold:
+          enablePodLevelClaim: false
+          enabled: false
+          hostPath:
+            path: ''
+            type: Directory
+          pvc:
+            claim:
+              size: 40Gi
+              storageClassName: ''
+              useDynamicProvisioning: false
+            existingClaim:
+              name: ''
+          volumeName: tieredvolcold
+          volumeType: ''
+        cool:
+          enablePodLevelClaim: false
+          enabled: false
+          hostPath:
+            path: ''
+            type: Directory
+          pvc:
+            claim:
+              size: 40Gi
+              storageClassName: ''
+              useDynamicProvisioning: false
+            existingClaim:
+              name: ''
+          volumeName: tieredvolcool
+          volumeType: ''
+        enabled: false
+        hot:
+          enablePodLevelClaim: false
+          enabled: false
+          hostPath:
+            path: ''
+            type: Directory
+          pvc:
+            claim:
+              size: 40Gi
+              storageClassName: ''
+              useDynamicProvisioning: false
+            existingClaim:
+              name: ''
+          volumeName: tieredvolhot
+          volumeType: ''
+        tiers:
+          - hot
+          - warm
+          - cool
+          - cold
+        warm:
+          enablePodLevelClaim: false
+          enabled: false
+          hostPath:
+            path: ''
+            type: Directory
+          pvc:
+            claim:
+              size: 40Gi
+              storageClassName: ''
+              useDynamicProvisioning: false
+            existingClaim:
+              name: ''
+          volumeName: tieredvolwarm
+          volumeType: ''
+    useDynamicProvisioning: _DB2_USE_DYNAPRO_
+    userHomeStor:
+      existingClaimName: ''
+  subType: 'smp'
+  zenServiceInstanceId: ''
