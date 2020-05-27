@@ -88,6 +88,8 @@ wait_for_pod() {
   exit 1
 }
 
+wait_for_pod
+
 oc logs -n ${NAMESPACE} --follow $POD
 sleep 9
 exit $(oc get pods -n ${NAMESPACE} ${POD} -o jsonpath="{.status.containerStatuses[0].state.terminated.exitCode}")

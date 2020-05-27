@@ -148,6 +148,7 @@ db_persistence_storageClassName:
     label: "Existing file storage class name"
     description: "Specify a specific storage class name for the Database. e.g. ibmc-file-retain-gold"
     type: "string"
+    default: "ibmc-file-retain-gold"  // REMOVE THIS
     required: false
 db_persistence_claimname:
   __metadata:
@@ -209,7 +210,7 @@ mfpserver_enabled:
     description: "Specify whether to enable Mobile Foundation Server."
     type: "boolean"
     required: true
-    default: true
+    default: false
 mfpserver_consoleUserid:
   __metadata:
     label: "Console Login Userid"
@@ -581,7 +582,7 @@ mfpanalytics_enabled:
     description: "Specify whether to enable Mobile Foundation Analytics."
     type: "boolean"
     required: true
-    default: true
+    default: false
 mfpanalytics_consoleUserid:
   __metadata:
     label: "Console Login Userid"
@@ -698,7 +699,7 @@ mfpanalytics_recvr_enabled:
     description: "Specify whether to enable Mobile Foundation Analytics Receiver."
     type: "boolean"
     required: true
-    default: true
+    default: false
 mfpanalytics_recvr_replicas:
   __metadata:
     label: "Replica Count"

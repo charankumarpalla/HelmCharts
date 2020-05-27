@@ -14,6 +14,9 @@ echo "Test DB connection ..."
 
 DB_TYPE=$1
 
+# Create/Switch Project for ES
+${CASE_FILES_DIR}/install/utils/create_project.sh ${_SYSGEN_MF_NAMESPACE}
+
 if [ "${db_host// }" == "" ]
 then
 	echo "Getting the DB2 Servicehost name ..."
@@ -56,6 +59,8 @@ case $SET_DB_TYPE in
         DB_TYPE=DB2;
         JDBC_URL="jdbc:db2://${DB_HOST}:${db_port}/${db_name}" ;;
 esac
+
+# check if the secret exists
 
 oc run mfdb --image=${_SYSGEN_DOCKER_REGISTRY}/cp/mfpf-dbinit:${_GEN_IMG_TAG} \
             --env="POD_NAMESPACE=${_SYSGEN_MF_NAMESPACE}" \
