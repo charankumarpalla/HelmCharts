@@ -11,6 +11,11 @@
 # *****************************************************************
 
 #  list the components enabled
+echo "***********************************************************************************************************"
+echo ""
+[ "${db_host}" == "" ] && printf " \n> DB2 Operator will be deployed for using in-built DB2 in namespace (${_GEN_DB2_NAMESPACE})"
+[ "${mfpanalytics_enabled}" == "true" ] && printf " \n> ES Operator will be deployed in namespace (${_GEN_ES_NAMESPACE})"
+echo ""
 printf "\nFollowing are the Mobile Foundation components enabled\n"
 [ "${mfpserver_enabled}" == "true" ] && printf " \n> Mobile Foundation Server"
 [ "${mfppush_enabled}" == "true" ] && printf " \n> Push"
@@ -19,3 +24,4 @@ printf "\nFollowing are the Mobile Foundation components enabled\n"
 [ "${mfpanalytics_enabled}" == "true" ] && printf " \n> Mobile Foundation Analytics"
 [ "${mfpappcenter_enabled}" == "true" ] && printf " \n> Application Center\n"
 echo ""
+echo "***********************************************************************************************************"

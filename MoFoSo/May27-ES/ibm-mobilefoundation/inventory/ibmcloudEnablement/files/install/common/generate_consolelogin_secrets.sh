@@ -10,7 +10,8 @@
 #
 # *****************************************************************
 
-echo "Generating the console login secrets ... "
+echo "Generating the Mobile Foundation console login secrets ... "
+
 # Create/Switch Project for MF
 ${CASE_FILES_DIR}/install/utils/create_project.sh ${_SYSGEN_MF_NAMESPACE}
 
@@ -79,3 +80,6 @@ type: Opaque
 EOF
 
 fi
+
+echo "Mobile Foundation Console secrets generated ..."
+echo "*********************************************************************************************************************"

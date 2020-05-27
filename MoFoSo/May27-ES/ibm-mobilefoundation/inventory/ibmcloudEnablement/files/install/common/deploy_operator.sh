@@ -58,3 +58,5 @@ sleep 5
 # Create/Switch Project for MF
 ${CASE_FILES_DIR}/install/utils/create_project.sh ${_SYSGEN_MF_NAMESPACE}
 
+echo "*********************************************************************************************************************"
+

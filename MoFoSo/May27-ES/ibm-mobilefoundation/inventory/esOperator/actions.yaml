@@ -1,0 +1,116 @@
+
+# USER ACTION REQUIRED: This is a scaffold file intended for the user to modify with their own CASE information
+
+actions:
+  actionDefs:
+    preInstall:
+      metadata:
+        name: preInstall
+        description: "Prerequisites to installing Elastic search"
+      roles:
+      - clusterAdmin
+      requires:
+        and:
+          - "/case/prereqs/k8sDistros/kubernetes"
+          - "/case/prereqs/k8sDistros/ibmCloudPrivate"
+          - "/case/prereqs/k8sDistros/ibmCloud"
+          - "/case/prereqs/k8sResources/ibmRestrictedPSP"
+          - "/case/prereqs/k8sResources/ibmRestrictedSCC"
+          - "/case/prereqs/k8sResourceVersions/helm/helmV2"
+          - "/case/prereqs/k8sResourceVersions/ESOperator"
+          - "/case/prereqs/k8sResourceVersions/Role"
+          - "/case/prereqs/k8sResourceVersions/ClusterRoleBinding"
+          - "/case/prereqs/k8sResourceVersions/CustomResourceDefinition"
+          - "/case/prereqs/k8sResourceVersions/ServiceAccount"
+          - "/case/prereqs/k8sResourceVersions/ConfigMap"
+          - "/case/prereqs/k8sResourceVersions/service"
+          - "/case/prereqs/k8sResourceVersions/deployment"
+          - "/case/prereqs/k8sResourceVersions/networkpolicy"
+          - "/case/prereqs/k8sResourceVersions/poddisruptionbudget"
+          - "/case/prereqs/k8sResourceVersions/SecurityContextConstraints"
+      k8sPermissions:
+        rules:
+        - rule:
+            group: "*"
+            resource: "*"
+            verbs:
+            - "*"
+    install:
+      metadata:
+        name: install
+        description: Installs Elasticsearch
+        displayName: Installs Elasticsearch
+        displayDescription: Installs all components
+      roles:
+        - clusterAdmin
+      requires:
+        and:
+          - "/case/prereqs/k8sDistros/ibmCloudPrivate"
+          - "/case/prereqs/k8sResources/ibmCloud"
+          - "/case/prereqs/k8sResources/ibmRestrictedPSP"
+          - "/case/prereqs/k8sResources/ibmRestrictedSCC"
+          - "/case/prereqs/k8sDistros/kubernetes"
+          - "/case/prereqs/k8sResourceVersions/helm/helmV2"
+      k8sPermissions:
+        rules:
+        - rule:
+            group: ""
+            resource: namespaces
+            verbs:
+            - get
+            version: ""
+        - rule:
+            group: ""
+            resource: configmaps
+            verbs:
+            - '*'
+            version: ""
+        - rule:
+            group: apps
+            resource: deployments
+            verbs:
+            - '*'
+            version: ""
+        - rule:
+            group: ""
+            resource: configmaps
+            verbs:
+            - '*'
+            version: ""
+        - rule:
+            group: ""
+            resource: services
+            verbs:
+            - '*'
+            version: ""
+        - rule:
+            group: monitoring.coreos.com
+            resource: servicemonitors
+            verbs:
+            - get
+            - create
+            version: ""
+        - rule:
+            group: apps
+            resource: deployments/finalizers
+            verbs:
+            - update
+            version: ""
+        - rule:
+            group: ""
+            resource: pods
+            verbs:
+            - get
+            version: ""
+        - rule:
+            group: apps
+            resource: replicasets
+            verbs:
+            - get
+            version: ""
+        - rule:
+            group: charts.helm.k8s.io
+            resource: '*'
+            verbs:
+            - '*'
+            version: ""

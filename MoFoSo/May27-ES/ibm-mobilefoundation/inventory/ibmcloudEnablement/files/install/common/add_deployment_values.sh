@@ -243,6 +243,8 @@ sed -i "s|_IMG_TAG_|${_GEN_IMG_TAG}|g" ${CR_YAML}
 
 if [ "$OPERATOR_NAME" == "es" ]
 then
+	echo " Deployment of ES is within ${_GEN_ES_NAMESPACE}"
+	echo "*****************************************************************"
     addESconfig
 fi
 
@@ -264,8 +266,12 @@ then
 		_GEN_DB_HOSTNAME=${db_host// }
 	fi
 
+	echo " Deployment of DB2 is within ${_GEN_DB2_NAMESPACE}"
+	echo "*****************************************************************"
     addDBconfig
 fi
 
 addMFconfig
 
+echo "Adding deployment values to the yamls completed..."
+echo "*********************************************************************************************************************"

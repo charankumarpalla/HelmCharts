@@ -13,13 +13,13 @@
 NAME=$1
 
 if ! oc get namespace "$NAME" > /dev/null 2>&1; then
-    echo "$NAME namespace does not exist."
+    echo "\"$NAME\" namespace does not exist."
     exit 0
 fi
 
 CREATED_BY=$(oc get namespace $NAME -o jsonpath='{.metadata.annotations.ibm\.com/created-by}')
 if [ "$CREATED_BY" != "MobileFoundation" ]; then
-    echo "$NAME namespace created separately."
+    echo "\"$NAME\" namespace created separately."
     exit 0
 fi
 

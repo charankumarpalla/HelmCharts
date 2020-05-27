@@ -14,6 +14,9 @@ DEPLOYED_OPERATOR=$1
 OPERATOR_NS=$2
 OPERATOR_DESC=$3
 
+echo "Check if the deployed ${DEPLOYED_OPERATOR}-operator is available ... "
+echo "Checks are performed within the namespace ($OPERATOR_NS)"
+
 ${CASE_FILES_DIR}/install/utils/check_pods_by_label.sh ${OPERATOR_NS} "name=${DEPLOYED_OPERATOR}-operator" ${DEPLOYED_OPERATOR}
 RC=$?
 if [ $RC -ne 0 ]; then

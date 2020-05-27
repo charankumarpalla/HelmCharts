@@ -27,3 +27,5 @@ if [ $RC -ne 0 ]; then
     printf "Failed to apply custom CR for the component - ${COMPONENT_NAME}. Exiting..."
     exit $RC
 fi
+
+echo "*********************************************************************************************************************"

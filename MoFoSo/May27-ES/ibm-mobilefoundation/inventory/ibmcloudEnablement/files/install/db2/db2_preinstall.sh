@@ -51,3 +51,6 @@ fi
 
 # Create/Switch Project back to MF namespace
 ${CASE_FILES_DIR}/install/utils/create_project.sh ${_SYSGEN_MF_NAMESPACE}
+
+echo "DB2 Preinstall completed ..."
+echo "*********************************************************************************************************************"

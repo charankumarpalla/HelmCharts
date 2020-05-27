@@ -75,3 +75,6 @@ if [ "${COMPONENT}" == "es" ]
 then
     checkStorageSettings "${elasticsearch_persistence_storageClassName}" "${elasticsearch_persistence_claimname}" "${_GEN_ES_NAMESPACE}"
 fi
+
+echo "Storage Validation completed ..."
+echo "*********************************************************************************************************************"

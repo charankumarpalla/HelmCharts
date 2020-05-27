@@ -14,6 +14,8 @@ NAMESPACE=$1
 LABEL_QUERY=$2
 LABEL_VALUE=$3
 
+echo "Run the operator pod availability checks ..."
+
 check_pod_status() {
   for i in {1..30}; do
     echo "Checking $LABEL_VALUE-operator pod status ($i/30)..."

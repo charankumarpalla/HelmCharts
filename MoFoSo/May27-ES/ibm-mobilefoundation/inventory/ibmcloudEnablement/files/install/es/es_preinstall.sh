@@ -42,3 +42,6 @@ oc create --namespace ${_GEN_ES_NAMESPACE} -f ${CASE_FILES_DIR}/components/es/de
 
 # Create/Switch Project back to MF namespace
 ${CASE_FILES_DIR}/install/utils/create_project.sh ${_SYSGEN_MF_NAMESPACE}
+
+echo "ES Preinstall completed ..."
+echo "*********************************************************************************************************************"

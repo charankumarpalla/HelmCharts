@@ -1,0 +1,18 @@
+
+# USER ACTION REQUIRED: This is a scaffold file intended for the user to modify with their own CASE information
+
+resources:
+  resourceDefs:
+    files:
+    - mediaType: application/vnd.case.resource.k8s.v1+yaml
+      ref: deploy/crds/charts_v1_esoperator_crd.yaml
+    - mediaType: application/vnd.case.resource.k8s.v1+yaml
+      ref: deploy/operator.yaml
+    - mediaType: application/vnd.case.resource.k8s.v1+yaml
+      ref: deploy/role.yaml
+    - mediaType: application/vnd.case.resource.k8s.v1+yaml
+      ref: deploy/role_binding.yaml
+    - mediaType: application/vnd.case.resource.k8s.v1+yaml
+      ref: deploy/scc.yaml
+    - mediaType: application/vnd.case.resource.k8s.v1+yaml
+      ref: deploy/service_account.yaml

@@ -16,3 +16,4 @@ source $CUR_DIR/../utils/functions.sh
 
 NAME=$1
 switch_project "$NAME"
+
